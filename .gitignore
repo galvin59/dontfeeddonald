@@ -1,0 +1,126 @@
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+# C extensions
+**/*.so
+
+# Distribution / packaging
+python-llm/.Python
+python-llm/build/
+python-llm/develop-eggs/
+python-llm/dist/
+python-llm/downloads/
+python-llm/eggs/
+python-llm/.eggs/
+python-llm/lib/
+python-llm/lib64/
+python-llm/parts/
+python-llm/sdist/
+python-llm/var/
+python-llm/wheels/
+python-llm/**/*.egg-info/
+python-llm/.installed.cfg
+python-llm/**/*.egg
+python-llm/MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a PyInstaller build script
+python-llm/**/*.manifest
+python-llm/**/*.spec
+
+# Installer logs
+python-llm/pip-log.txt
+python-llm/pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+python-llm/htmlcov/
+python-llm/.tox/
+python-llm/.nox/
+python-llm/.coverage
+python-llm/.coverage.*
+python-llm/.cache
+python-llm/nosetests.xml
+python-llm/coverage.xml
+python-llm/**/*.cover
+python-llm/.hypothesis/
+python-llm/.pytest_cache/
+
+# Translations
+python-llm/**/*.mo
+python-llm/**/*.pot
+
+# Django stuff:
+python-llm/**/*.log
+python-llm/local_settings.py
+python-llm/db.sqlite3
+
+# Flask stuff:
+python-llm/instance/
+python-llm/.webassets-cache
+
+# Scrapy stuff:
+python-llm/.scrapy
+
+# Sphinx documentation
+python-llm/docs/_build/
+
+# PyBuilder
+python-llm/target/
+
+# Jupyter Notebook
+python-llm/.ipynb_checkpoints
+
+# IPython
+python-llm/profile_default/
+python-llm/ipython_config.py
+
+# pyenv
+python-llm/.python-version
+
+# celery beat schedule file
+python-llm/celerybeat-schedule
+
+# SageMath parsed files
+python-llm/**/*.sage.py
+
+# Environments
+python-llm/.env
+python-llm/.venv
+python-llm/env/
+python-llm/venv/
+python-llm/ENV/
+python-llm/env.bak/
+python-llm/venv.bak/
+
+# Spyder project settings
+python-llm/.spyderproject
+python-llm/.spyproject
+
+# Rope project settings
+python-llm/.ropeproject
+
+# mkdocs documentation
+python-llm/site
+
+# mypy
+python-llm/.mypy_cache/
+python-llm/.dmypy.json
+python-llm/dmypy.json
+
+# Pyre type checker
+python-llm/.pyre/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Database
+**/*.db
+**/*.sqlite3
