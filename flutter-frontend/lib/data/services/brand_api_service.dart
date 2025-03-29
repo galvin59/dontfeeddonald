@@ -124,7 +124,8 @@ class BrandApiService {
   
   /// Fetch brand literacy details for a specific brand
   /// Returns a BrandLiteracy object with all available information
-  Future<BrandLiteracy> getBrandLiteracy(String brandId) async {
+  /// and a computed score from the backend
+  Future<Map<String, dynamic>> getBrandLiteracy(String brandId) async {
     try {
       // Get the API key from secure storage
       final apiKey = await _secureStorage.getApiKey();
@@ -157,8 +158,19 @@ class BrandApiService {
         final data = response.data;
         developer.log("Received brand literacy data from API");
         
-        // Convert to BrandLiteracy object
-        return BrandLiteracy.fromJson(data);
+        // Extract the score from the response
+        final int? score = data['score'] as int?;
+        
+        // Remove the score from the data before converting to BrandLiteracy
+        if (data.containsKey('score')) {
+          data.remove('score');
+        }
+        
+        // Convert to BrandLiteracy object and return with score
+        return {
+          'brandLiteracy': BrandLiteracy.fromJson(data),
+          'score': score,
+        };
       } else {
         developer.log("API request failed with status code: ${response.statusCode}");
         throw Exception('Failed to fetch brand literacy: ${response.statusCode}');

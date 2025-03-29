@@ -13,10 +13,9 @@ _$BrandLiteracyImpl _$$BrandLiteracyImplFromJson(Map<String, dynamic> json) =>
       parentCompany: json['parentCompany'] as String?,
       brandOrigin: json['brandOrigin'] as String?,
       logoUrl: json['logoUrl'] as String?,
-      similarBrandsEu:
-          (json['similarBrandsEu'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList(),
+      similarBrandsEu: const SimilarBrandsConverter().fromJson(
+        json['similarBrandsEu'],
+      ),
       productFamily: json['productFamily'] as String?,
       totalEmployees: json['totalEmployees'] as String?,
       totalEmployeesSource: json['totalEmployeesSource'] as String?,
@@ -51,7 +50,9 @@ Map<String, dynamic> _$$BrandLiteracyImplToJson(_$BrandLiteracyImpl instance) =>
       'parentCompany': instance.parentCompany,
       'brandOrigin': instance.brandOrigin,
       'logoUrl': instance.logoUrl,
-      'similarBrandsEu': instance.similarBrandsEu,
+      'similarBrandsEu': const SimilarBrandsConverter().toJson(
+        instance.similarBrandsEu,
+      ),
       'productFamily': instance.productFamily,
       'totalEmployees': instance.totalEmployees,
       'totalEmployeesSource': instance.totalEmployeesSource,

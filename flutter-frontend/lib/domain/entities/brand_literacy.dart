@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'similar_brands_converter.dart';
 
 part 'brand_literacy.freezed.dart';
 part 'brand_literacy.g.dart';
@@ -11,6 +12,7 @@ class BrandLiteracy with _$BrandLiteracy {
     String? parentCompany,
     String? brandOrigin,
     String? logoUrl,
+    @SimilarBrandsConverter()
     List<String>? similarBrandsEu,
     String? productFamily,
     String? totalEmployees,

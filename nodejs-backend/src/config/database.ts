@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_DATABASE || "duckDatabase",
   synchronize: false, // Set to false in production
   logging: process.env.NODE_ENV === "development",
-  entities: ["src/entity/**/*.ts"],
+  entities: ["dist/entity/**/*.js"],
   subscribers: [],
   migrations: [],
 });

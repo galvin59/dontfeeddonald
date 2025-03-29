@@ -1,6 +1,5 @@
 import 'package:dont_feed_donald/data/models/brand_search_result.dart';
 import 'package:dont_feed_donald/data/services/brand_api_service.dart';
-import 'package:dont_feed_donald/domain/entities/brand_literacy.dart';
 
 /// Repository class for brand-related operations
 class BrandRepository {
@@ -20,7 +19,8 @@ class BrandRepository {
   }
   
   /// Get detailed brand literacy information for a brand
-  Future<BrandLiteracy> getBrandLiteracy(String brandId) async {
+  /// Returns a map containing the BrandLiteracy object and the computed score
+  Future<Map<String, dynamic>> getBrandLiteracy(String brandId) async {
     return await _apiService.getBrandLiteracy(brandId);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dont_feed_donald/data/repositories/brand_repository.dart';
 import 'package:dont_feed_donald/domain/blocs/brand_literacy/brand_literacy_event.dart';
 import 'package:dont_feed_donald/domain/blocs/brand_literacy/brand_literacy_state.dart';
+import 'package:dont_feed_donald/domain/entities/brand_literacy.dart';
 
 class BrandLiteracyBloc extends Bloc<BrandLiteracyEvent, BrandLiteracyState> {
   final BrandRepository _brandRepository;
@@ -22,10 +23,18 @@ class BrandLiteracyBloc extends Bloc<BrandLiteracyEvent, BrandLiteracyState> {
     
     try {
       developer.log('Fetching brand literacy details for ID: ${event.brandId}');
-      final brandLiteracy = await _brandRepository.getBrandLiteracy(event.brandId);
+      final response = await _brandRepository.getBrandLiteracy(event.brandId);
+      
+      // Extract the brandLiteracy and score from the response
+      final brandLiteracy = response['brandLiteracy'] as BrandLiteracy;
+      final brandScore = response['score'] as int?;
+      
+      developer.log('Received brand literacy with score: $brandScore');
+      
       emit(state.copyWith(
         status: BrandLiteracyStatus.loaded,
         brandLiteracy: brandLiteracy,
+        brandScore: brandScore,
       ));
     } catch (e) {
       developer.log('Error fetching brand literacy: $e');

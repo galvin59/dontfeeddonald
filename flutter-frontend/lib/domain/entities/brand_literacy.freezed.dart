@@ -26,6 +26,7 @@ mixin _$BrandLiteracy {
   String? get parentCompany => throw _privateConstructorUsedError;
   String? get brandOrigin => throw _privateConstructorUsedError;
   String? get logoUrl => throw _privateConstructorUsedError;
+  @SimilarBrandsConverter()
   List<String>? get similarBrandsEu => throw _privateConstructorUsedError;
   String? get productFamily => throw _privateConstructorUsedError;
   String? get totalEmployees => throw _privateConstructorUsedError;
@@ -70,7 +71,7 @@ abstract class $BrandLiteracyCopyWith<$Res> {
     String? parentCompany,
     String? brandOrigin,
     String? logoUrl,
-    List<String>? similarBrandsEu,
+    @SimilarBrandsConverter() List<String>? similarBrandsEu,
     String? productFamily,
     String? totalEmployees,
     String? totalEmployeesSource,
@@ -282,7 +283,7 @@ abstract class _$$BrandLiteracyImplCopyWith<$Res>
     String? parentCompany,
     String? brandOrigin,
     String? logoUrl,
-    List<String>? similarBrandsEu,
+    @SimilarBrandsConverter() List<String>? similarBrandsEu,
     String? productFamily,
     String? totalEmployees,
     String? totalEmployeesSource,
@@ -486,7 +487,7 @@ class _$BrandLiteracyImpl implements _BrandLiteracy {
     this.parentCompany,
     this.brandOrigin,
     this.logoUrl,
-    final List<String>? similarBrandsEu,
+    @SimilarBrandsConverter() final List<String>? similarBrandsEu,
     this.productFamily,
     this.totalEmployees,
     this.totalEmployeesSource,
@@ -523,6 +524,7 @@ class _$BrandLiteracyImpl implements _BrandLiteracy {
   final String? logoUrl;
   final List<String>? _similarBrandsEu;
   @override
+  @SimilarBrandsConverter()
   List<String>? get similarBrandsEu {
     final value = _similarBrandsEu;
     if (value == null) return null;
@@ -682,7 +684,7 @@ abstract class _BrandLiteracy implements BrandLiteracy {
     final String? parentCompany,
     final String? brandOrigin,
     final String? logoUrl,
-    final List<String>? similarBrandsEu,
+    @SimilarBrandsConverter() final List<String>? similarBrandsEu,
     final String? productFamily,
     final String? totalEmployees,
     final String? totalEmployeesSource,
@@ -718,6 +720,7 @@ abstract class _BrandLiteracy implements BrandLiteracy {
   @override
   String? get logoUrl;
   @override
+  @SimilarBrandsConverter()
   List<String>? get similarBrandsEu;
   @override
   String? get productFamily;

@@ -54,7 +54,17 @@ export const getBrandById = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    res.status(200).json(brand);
+    // Add a score to the brand data (not stored in the database)
+    // TODO: Replace this with the actual scoring algorithm
+    // This is where you should implement the final algorithm to calculate the score
+    // based on various factors like environmental impact, ethical practices, etc.
+    const brandScore = Math.floor(Math.random() * 10) + 1; // Random score between 1 and 10
+    
+    // Return the brand data with the added score
+    res.status(200).json({
+      ...brand,
+      score: brandScore
+    });
   } catch (error) {
     console.error("Error getting brand by ID:", error);
     res.status(500).json({ error: "Internal server error" });
