@@ -4,7 +4,7 @@ import re
 import asyncio
 from typing import Dict, Any, List, Optional, Union, Type
 
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.agents import AgentExecutor, initialize_agent, AgentType
 from langchain.callbacks.manager import AsyncCallbackManagerForToolRun, CallbackManagerForToolRun
 from langchain_community.tools import BaseTool

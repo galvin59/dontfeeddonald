@@ -1,0 +1,21 @@
+{
+  "appTitle": "No Alimentes a Donald",
+  "searchHint": "Buscar marcas...",
+  "noResultsFound": "No se encontraron resultados",
+  "tryAnotherSearch": "Intenta con otro término de búsqueda",
+  "brandDetails": "Detalles de la marca",
+  "loading": "Cargando...",
+  "error": "Error",
+  "retry": "Reintentar",
+  "settings": "Configuración",
+  "language": "Idioma",
+  "theme": "Tema",
+  "darkMode": "Modo oscuro",
+  "about": "Acerca de",
+  "version": "Versión",
+  "privacyPolicy": "Política de privacidad",
+  "termsOfService": "Términos de servicio",
+  "cancel": "Cancelar",
+  "save": "Guardar",
+  "ok": "Aceptar"
+}

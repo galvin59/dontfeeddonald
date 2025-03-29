@@ -94,6 +94,14 @@ python-llm/ENV/
 python-llm/env.bak/
 python-llm/venv.bak/
 
+# Node.js
+nodejs-backend/node_modules/
+nodejs-backend/dist/
+nodejs-backend/.env
+nodejs-backend/npm-debug.log
+nodejs-backend/yarn-error.log
+nodejs-backend/.DS_Store
+
 # Spyder project settings
 python-llm/.spyderproject
 python-llm/.spyproject

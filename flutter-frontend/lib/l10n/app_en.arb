@@ -1,0 +1,78 @@
+{
+  "appTitle": "Don't Feed Donald",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "searchHint": "Search for brands...",
+  "@searchHint": {
+    "description": "Hint text for the search field"
+  },
+  "noResultsFound": "No results found",
+  "@noResultsFound": {
+    "description": "Message shown when no search results are found"
+  },
+  "tryAnotherSearch": "Try another search term",
+  "@tryAnotherSearch": {
+    "description": "Suggestion when no search results are found"
+  },
+  "brandDetails": "Brand Details",
+  "@brandDetails": {
+    "description": "Title for the brand details page"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Text shown during loading operations"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic error message"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Text for retry button"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Title for the settings page"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Label for language selection"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Label for theme selection"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Label for dark mode toggle"
+  },
+  "about": "About",
+  "@about": {
+    "description": "Label for about section"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "Label for app version"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Label for privacy policy"
+  },
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Label for terms of service"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Text for cancel button"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Text for save button"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Text for OK button"
+  }
+}

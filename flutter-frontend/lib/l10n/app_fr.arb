@@ -1,0 +1,21 @@
+{
+  "appTitle": "Ne Nourrissez Pas Donald",
+  "searchHint": "Rechercher des marques...",
+  "noResultsFound": "Aucun résultat trouvé",
+  "tryAnotherSearch": "Essayez un autre terme de recherche",
+  "brandDetails": "Détails de la marque",
+  "loading": "Chargement...",
+  "error": "Erreur",
+  "retry": "Réessayer",
+  "settings": "Paramètres",
+  "language": "Langue",
+  "theme": "Thème",
+  "darkMode": "Mode sombre",
+  "about": "À propos",
+  "version": "Version",
+  "privacyPolicy": "Politique de confidentialité",
+  "termsOfService": "Conditions d'utilisation",
+  "cancel": "Annuler",
+  "save": "Enregistrer",
+  "ok": "OK"
+}

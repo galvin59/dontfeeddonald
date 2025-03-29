@@ -1,18 +1,29 @@
 # Brand Lookup Tool
 
-A Python application that uses LLMs to lookup information about brands, such as parent companies, brand origin, logos, and more. This tool automatically completes missing information for brands stored in a PostgreSQL database using LangChain agents and search tools.
+A tool that uses LLMs to lookup information about brands, such as parent companies, brand origin, logos, and more. This tool automatically completes missing information for brands stored in a PostgreSQL database using LangChain agents and search tools.
 
-## Architecture
+## Components
+
+### Python Backend
 
 - **Database Layer**: Uses SQLAlchemy ORM with PostgreSQL
 - **Agent Layer**: Uses LangChain agents with a local LLM
 - **Processing Layer**: Sequential field processing with failover
 - **CLI Layer**: Command-line tools for interacting with the system
 
+### Node.js Backend
+
+- **Database Layer**: Uses TypeORM with PostgreSQL (same database as Python backend)
+- **API Layer**: RESTful API with Express.js
+- **Security**: API key authentication, rate limiting, and security headers
+
 ## Setup
+
+### Python Backend
 
 1. Install dependencies:
 ```bash
+cd python-llm
 pip install -r requirements.txt
 ```
 
@@ -20,6 +31,48 @@ pip install -r requirements.txt
    - Make sure PostgreSQL is installed and running
    - Database credentials are stored in the `.env` file
    - Update the `.env` file with your database credentials if needed
+
+### Node.js Backend
+
+1. Install dependencies:
+```bash
+cd nodejs-backend
+npm install
+```
+
+2. Configure your environment:
+   - Copy `.env.example` to `.env`
+   - Update the `.env` file with your database credentials and API key
+
+3. Start the server:
+```bash
+# Development mode
+npm run dev
+
+# Production mode
+npm run build
+npm start
+```
+
+## API Endpoints
+
+### Brand Lookup
+
+```
+GET /api/brands/lookup?query=brandName
+```
+
+Returns an array of brands with name, logo, and ID that match the query.
+
+### Get Brand Details
+
+```
+GET /api/brands/:id
+```
+
+Returns all fields for a specific brand by ID.
+
+## Environment Variables
 
 ```
 DB_TYPE=postgres
