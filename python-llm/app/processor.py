@@ -11,7 +11,6 @@ from typing import List, Dict, Any, Optional, Tuple
 
 from app.models import BrandLiteracy
 from app.agent import BrandLookupAgent
-from app.logo_search import search_brand_logo
 from app.db_service import update_brand
 
 # Configure logging
@@ -29,11 +28,9 @@ class BrandProcessor:
     """Handles the sequential processing of brand information."""
     
     # Define the order of fields to process
-    # Note: logoUrl is handled separately in process_brand_field
     FIELD_ORDER = [
         "parentCompany",
         "brandOrigin", 
-        "logoUrl", # Now included in the main order, handled within process_brand_field
         "productFamily", # Added as it exists in model and prompts
         "usEmployees",
         "euEmployees",
@@ -79,24 +76,7 @@ class BrandProcessor:
         logger.info(f"Processing field '{field}' for brand '{brand.name}'")
         
         try:
-            # Handle logo URL separately as it doesn't use the agent
-            if field == "logoUrl":
-                # Check if logoUrl already exists
-                if brand.logoUrl:
-                    logger.info(f"Skipping logo search for '{brand.name}' as logoUrl already exists: {brand.logoUrl}")
-                    return True  # Indicate successful handling (by skipping)
-                    
-                result = search_brand_logo(brand)
-                if result and "logo_url" in result and result["logo_url"] and result["logo_url"].get("value"):
-                    logo_url = result["logo_url"]["value"]
-                    source = result["logo_url"].get("source", "")
-                    logger.info(f"Found logo URL for {brand.name}: {logo_url}")
-                    return update_brand(session, brand.id, field, logo_url, source)
-                else:
-                    logger.warning(f"No logo URL found for {brand.name}")
-                    return False
-            
-            # Use the agent for all other fields
+            # Use the agent for all fields
             result = await self.agent.lookup_field(brand, field)
             
             # Extract the value and source from the result
