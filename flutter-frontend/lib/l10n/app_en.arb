@@ -84,7 +84,7 @@
   "@enterBrandNamePrompt": {
     "description": "Prompt to enter a brand name"
   },
-  "noBrandsFound": "No brands found",
+  "noBrandsFound": "No brands found. For now, this app only references major brands sold in EU supermarkets!",
   "@noBrandsFound": {
     "description": "Message shown when no brands are found"
   },

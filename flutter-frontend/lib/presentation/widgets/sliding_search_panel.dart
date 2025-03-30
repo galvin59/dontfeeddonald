@@ -132,9 +132,7 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
                 builder: (context, state) {
                   final l10n = AppLocalizations.of(context)!;
                   if (state.status == BrandSearchStatus.initial) {
-                    return Center(
-                      child: Text(l10n.enterBrandNamePrompt),
-                    );
+                    return Center(child: Text(l10n.enterBrandNamePrompt));
                   }
 
                   if (state.status == BrandSearchStatus.loading) {
@@ -153,7 +151,10 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
                   }
 
                   if (state.brands.isEmpty) {
-                    return Center(child: Text(l10n.noBrandsFound));
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(child: Text(l10n.noBrandsFound)),
+                    );
                   }
 
                   return ListView.builder(
