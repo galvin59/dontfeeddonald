@@ -33,7 +33,7 @@ class BrandProcessor:
     FIELD_ORDER = [
         "parentCompany",
         "brandOrigin", 
-        # "logoUrl", # Handled separately
+        "logoUrl", # Now included in the main order, handled within process_brand_field
         "productFamily", # Added as it exists in model and prompts
         "usEmployees",
         "euEmployees",
@@ -81,6 +81,11 @@ class BrandProcessor:
         try:
             # Handle logo URL separately as it doesn't use the agent
             if field == "logoUrl":
+                # Check if logoUrl already exists
+                if brand.logoUrl:
+                    logger.info(f"Skipping logo search for '{brand.name}' as logoUrl already exists: {brand.logoUrl}")
+                    return True  # Indicate successful handling (by skipping)
+                    
                 result = search_brand_logo(brand)
                 if result and "logo_url" in result and result["logo_url"] and result["logo_url"].get("value"):
                     logo_url = result["logo_url"]["value"]
