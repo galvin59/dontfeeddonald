@@ -46,11 +46,9 @@ class BrandApiService {
 
       // Format the query - trim whitespace
       String formattedQuery = query.trim();
-      developer.log("Searching for brands with query: $formattedQuery");
       
       // Create the full request URL for the Node.js API
       final url = "${AppConfig.apiBaseUrl}/api/brands/lookup";
-      developer.log("Making API request to: $url with query: $formattedQuery");
       
       // Make the API request
       final response = await _dio.get(
@@ -64,28 +62,17 @@ class BrandApiService {
         ),
       );
       
-      developer.log("Response received, status code: ${response.statusCode}");
 
       // Process the response
       if (response.statusCode == 200) {
         // Convert the response data to a list of BrandSearchResult objects
         final List<dynamic> data = response.data;
-        developer.log("Received ${data.length} results from API");
         
         // Convert to BrandSearchResult objects
         final results = data.map((item) => BrandSearchResult.fromJson(item)).toList();
         
-        // If we got no results from the API and query is long enough, try with just the first letter capitalized
-        if (results.isEmpty && formattedQuery.length >= 3) {
-          // For a query like "coca", try "Co" instead, which should match Coca-Cola
-          final shorterQuery = formattedQuery.substring(0, 2);
-          developer.log("No results found, trying with shorter query: $shorterQuery");
-          return searchBrands(shorterQuery);
-        }
-        
         return results;
       } else {
-        developer.log("API request failed with status code: ${response.statusCode}");
         throw Exception('Failed to search brands: ${response.statusCode}');
       }
     } on DioException catch (e) {
@@ -117,7 +104,6 @@ class BrandApiService {
       
       throw Exception(errorMsg);
     } catch (e) {
-      developer.log("Unexpected error: $e");
       throw Exception('Unexpected error searching brands: $e');
     }
   }
@@ -133,11 +119,8 @@ class BrandApiService {
         throw Exception("API key not found");
       }
       
-      developer.log("Fetching brand literacy details for ID: $brandId");
-      
       // Use the Node.js API endpoint for getting brand by ID
       final url = "${AppConfig.apiBaseUrl}/api/brands/$brandId";
-      developer.log("Making API request to: $url");
       
       // Make the API request
       final response = await _dio.get(
@@ -150,13 +133,11 @@ class BrandApiService {
         ),
       );
       
-      developer.log("Response received, status code: ${response.statusCode}");
 
       // Process the response
       if (response.statusCode == 200) {
         // Convert the response data to a BrandLiteracy object
         final data = response.data;
-        developer.log("Received brand literacy data from API");
         
         // Extract the score from the response
         final int? score = data['score'] as int?;
@@ -172,7 +153,6 @@ class BrandApiService {
           'score': score,
         };
       } else {
-        developer.log("API request failed with status code: ${response.statusCode}");
         throw Exception('Failed to fetch brand literacy: ${response.statusCode}');
       }
     } on DioException catch (e) {
@@ -203,7 +183,6 @@ class BrandApiService {
       
       throw Exception(errorMsg);
     } catch (e) {
-      developer.log("Unexpected error: $e");
       throw Exception('Unexpected error fetching brand literacy: $e');
     }
   }

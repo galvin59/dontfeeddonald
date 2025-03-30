@@ -1,6 +1,6 @@
 {
-  "appTitle": "Ne Nourrissez Pas Donald",
-  "searchHint": "Rechercher des marques...",
+  "appTitle": "Don't Feed Donald",
+  "searchHint": "Rechercher une marque",
   "noResultsFound": "Aucun résultat trouvé",
   "tryAnotherSearch": "Essayez un autre terme de recherche",
   "brandDetails": "Détails de la marque",
@@ -17,5 +17,17 @@
   "termsOfService": "Conditions d'utilisation",
   "cancel": "Annuler",
   "save": "Enregistrer",
-  "ok": "OK"
+  "ok": "OK",
+  "note12": "Acheter ce produit remplit les poches de Donald, qui va pouvoir continuer à se gaver tout en méprisant le reste de la basse-cour",
+  "note34": "Acheter ce produit permet à Donald de vivre dans un grand confort ... fort de ses richesses et ne pouvant retenir son tempérament odieux, il a tendance à terroriser les autres habitants de la basse-cour",
+  "note56": "Acheter ce produit bénéficie certes à Donald, mais aussi aux autres habitants de la basse-cour. Cela l'oblige donc à un peu plus d'humilité.",
+  "note78": "Acheter ce produit contribue clairement à mettre Donald au régime ! Cela l'encourage à adopter un mode de vie plus sain et surtout à mieux se comporter vis à vis de ses congénères.",
+  "note910": "Acheter ce produit, ce n'est vraiment pas rendre service à Donald ... le pauvre est au régime sec, cela l'obligera peut-être à un peu plus de respect vis à vis du reste de la basse-cour.",
+  "enterBrandNamePrompt": "Entrez le nom d'une marque pour commencer",
+  "noBrandsFound": "Aucune marque trouvée",
+  "searchBrandTitle": "Rechercher une marque",
+  "ourOpinion": "Notre avis :",
+  "searchError": "Une erreur est survenue",
+  "brandNameHint": "Nom de marque...",
+  "errorLoadingData": "Erreur lors du chargement des détails de la marque"
 }

@@ -74,5 +74,35 @@
   "ok": "OK",
   "@ok": {
     "description": "Text for OK button"
-  }
+  },
+  "note12": "Buying this product fills Donald's pockets, allowing him to continue gorging himself while despising the rest of the barnyard.",
+  "note34": "Buying this product allows Donald to live in great comfort... strong in his wealth and unable to restrain his odious temperament, he tends to terrorize the other inhabitants of the barnyard.",
+  "note56": "Buying this product certainly benefits Donald, but also the other inhabitants of the barnyard. This forces him to be a little more humble.",
+  "note78": "Buying this product clearly helps put Donald on a diet! It encourages him to adopt a healthier lifestyle and, above all, to behave better towards his fellow creatures.",
+  "note910": "Buying this product is really not doing Donald a favor... poor and on a strict diet, it might force him to show a little more respect towards the rest of the barnyard.",
+  "enterBrandNamePrompt": "Enter a brand name to start",
+  "@enterBrandNamePrompt": {
+    "description": "Prompt to enter a brand name"
+  },
+  "noBrandsFound": "No brands found",
+  "@noBrandsFound": {
+    "description": "Message shown when no brands are found"
+  },
+  "searchBrandTitle": "Search for a brand",
+  "@searchBrandTitle": {
+    "description": "Title for search brand page"
+  },
+  "ourOpinion": "Our opinion:",
+  "@ourOpinion": {
+    "description": "Label for our opinion section"
+  },
+  "searchError": "An error occurred",
+  "@searchError": {
+    "description": "Message shown when a search error occurs"
+  },
+  "brandNameHint": "Brand name...",
+  "@brandNameHint": {
+    "description": "Hint text for brand name input"
+  },
+  "errorLoadingData": "Error loading brand details"
 }

@@ -29,11 +29,14 @@ export class BrandLiteracy {
   @Column({ nullable: true })
   totalEmployeesSource!: string;
 
-  @Column({ nullable: true })
-  employeesUS!: string;
+  @Column({ type: "boolean", nullable: true })
+  employeesUS!: boolean | null;
 
   @Column({ nullable: true })
   employeesUSSource!: string;
+
+  @Column({ type: "boolean", nullable: true })
+  employeesEU!: boolean | null;
 
   @Column({ nullable: true })
   economicImpact!: string;
@@ -53,6 +56,9 @@ export class BrandLiteracy {
   @Column({ nullable: true })
   factoryInEUSource!: string;
 
+  @Column({ type: "boolean", nullable: true })
+  factoryInUS!: boolean | null;
+
   @Column({ nullable: true })
   frenchFarmer!: boolean;
 
@@ -64,6 +70,9 @@ export class BrandLiteracy {
 
   @Column({ nullable: true })
   euFarmerSource!: string;
+
+  @Column({ type: "boolean", nullable: true })
+  farmerUS!: boolean | null;
 
   @Column({ name: "createdAt", type: "timestamp", nullable: true })
   createdAt!: Date;

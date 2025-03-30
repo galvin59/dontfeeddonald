@@ -16,6 +16,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final GetIt getIt = GetIt.instance;
 
+// Global instance of RouteObserver
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 Future<void> setupDependencies() async {
   // Services
   getIt.registerSingleton<SecureStorageService>(SecureStorageService());
@@ -86,7 +89,7 @@ class DontFeedDonaldApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             debugShowCheckedModeBanner: false,
             routerConfig: AppRouter.router,
-            locale: localeProvider.locale,
+            // Remove explicit locale setting to use device locale by default
             supportedLocales: L10n.all,
             // Make the app truly full screen
             builder: (context, child) {

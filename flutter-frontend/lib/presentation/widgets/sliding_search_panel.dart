@@ -8,6 +8,7 @@ import "package:dont_feed_donald/domain/blocs/brand_search/brand_search_bloc.dar
 import "package:dont_feed_donald/domain/blocs/brand_search/brand_search_event.dart";
 import "package:dont_feed_donald/domain/blocs/brand_search/brand_search_state.dart";
 import "package:cached_network_image/cached_network_image.dart";
+import "package:flutter_gen/gen_l10n/app_localizations.dart";
 
 class SlidingSearchPanel extends StatefulWidget {
   const SlidingSearchPanel({super.key});
@@ -42,8 +43,8 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
       _debounce!.cancel();
     }
 
-    // Debounce for 500ms to wait for user to stop typing
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    // Debounce for 750ms to wait for user to stop typing
+    _debounce = Timer(const Duration(milliseconds: 750), () {
       final query = _searchController.text.trim();
 
       // Only search if query has 3 or more characters
@@ -106,7 +107,7 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
                 controller: _searchController,
                 focusNode: _searchFocusNode,
                 decoration: InputDecoration(
-                  hintText: "Nom de marque...",
+                  hintText: AppLocalizations.of(context)!.brandNameHint,
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon:
                       _searchController.text.isNotEmpty
@@ -129,9 +130,10 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
             Expanded(
               child: BlocBuilder<BrandSearchBloc, BrandSearchState>(
                 builder: (context, state) {
+                  final l10n = AppLocalizations.of(context)!;
                   if (state.status == BrandSearchStatus.initial) {
-                    return const Center(
-                      child: Text("Entrez le nom d'une marque pour commencer"),
+                    return Center(
+                      child: Text(l10n.enterBrandNamePrompt),
                     );
                   }
 
@@ -142,7 +144,7 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
                   if (state.status == BrandSearchStatus.failure) {
                     return Center(
                       child: Text(
-                        state.errorMessage ?? "Une erreur est survenue",
+                        state.errorMessage ?? l10n.searchError,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.error,
                         ),
@@ -151,7 +153,7 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
                   }
 
                   if (state.brands.isEmpty) {
-                    return const Center(child: Text("Aucune marque trouvée"));
+                    return Center(child: Text(l10n.noBrandsFound));
                   }
 
                   return ListView.builder(

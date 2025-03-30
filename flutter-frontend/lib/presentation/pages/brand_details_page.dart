@@ -7,6 +7,11 @@ import "package:dont_feed_donald/domain/blocs/brand_literacy/brand_literacy_bloc
 import "package:dont_feed_donald/domain/blocs/brand_literacy/brand_literacy_event.dart";
 import "package:dont_feed_donald/domain/blocs/brand_literacy/brand_literacy_state.dart";
 import "package:dont_feed_donald/domain/entities/brand_literacy.dart";
+import "package:flutter_gen/gen_l10n/app_localizations.dart";
+import "package:cached_network_image/cached_network_image.dart";
+import "package:google_fonts/google_fonts.dart";
+import "package:go_router/go_router.dart";
+import "package:dont_feed_donald/core/routes/app_router.dart";
 
 class BrandDetailsPage extends StatefulWidget {
   final BrandSearchResult searchResult;
@@ -72,56 +77,94 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
               BrandLiteracyBloc(brandRepository: BrandRepository())
                 ..add(FetchBrandLiteracy(brandId: widget.searchResult.id)),
       child: Scaffold(
-        appBar: AppBar(title: Text(widget.searchResult.name)),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.go(AppRouter.home),
+          ),
+          title: Text(widget.searchResult.name),
+        ),
         backgroundColor: Colors.white,
-        body: BlocBuilder<BrandLiteracyBloc, BrandLiteracyState>(
-          builder: (context, state) {
-            switch (state.status) {
-              case BrandLiteracyStatus.initial:
-              case BrandLiteracyStatus.loading:
-                return const Center(child: CircularProgressIndicator());
-              case BrandLiteracyStatus.loaded:
-                if (state.brandScore != null && !_animationStarted) {
-                  // Use SchedulerBinding to start animation after the build is complete
-                  SchedulerBinding.instance.addPostFrameCallback((_) {
-                    _setupAndStartAnimation(state.brandScore!);
-                  });
-                }
-                return _buildBrandLiteracyDetails(
-                  context,
-                  state.brandLiteracy!,
-                  _animationStarted ? _displayScore : state.brandScore!,
-                );
-              case BrandLiteracyStatus.error:
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        size: 60,
-                        color: Colors.red,
+        body: SafeArea(
+          child: BlocBuilder<BrandLiteracyBloc, BrandLiteracyState>(
+            builder: (context, state) {
+              switch (state.status) {
+                case BrandLiteracyStatus.initial:
+                case BrandLiteracyStatus.loading:
+                  return const Center(child: CircularProgressIndicator());
+                case BrandLiteracyStatus.loaded:
+                  // Extract data safely from the loaded state
+                  final BrandLiteracy? brandLiteracy = state.brandLiteracy;
+                  final int? finalScore = state.brandScore;
+
+                  // Only proceed if data is valid
+                  if (brandLiteracy != null && finalScore != null) {
+                    // Calculate final score note using the non-null finalScore
+                    final l10n = AppLocalizations.of(context)!;
+                    final scoreNoteKey = _getScoreNoteKey(finalScore);
+                    final finalScoreNote = _getLocalizedString(
+                      l10n,
+                      scoreNoteKey,
+                    );
+
+                    // Start animation if not already started, using non-null finalScore
+                    if (!_animationStarted) {
+                      SchedulerBinding.instance.addPostFrameCallback((_) {
+                        _setupAndStartAnimation(finalScore);
+                      });
+                    }
+
+                    // Build the UI with the final note and animated gauge
+                    return _buildBrandLiteracyDetails(
+                      context,
+                      brandLiteracy, // Pass non-nullable brandLiteracy
+                      _animationStarted
+                          ? _displayScore
+                          : finalScore, // Animated score for gauge
+                      finalScoreNote, // Final note for text
+                    );
+                  } else {
+                    // Handle case where loaded state might have null data (fallback)
+                    return Center(
+                      child: Text(
+                        AppLocalizations.of(context)?.errorLoadingData ??
+                            "Error loading data",
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Error: ${state.errorMessage}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<BrandLiteracyBloc>().add(
-                            FetchBrandLiteracy(brandId: widget.searchResult.id),
-                          );
-                        },
-                        child: const Text('Try Again'),
-                      ),
-                    ],
-                  ),
-                );
-            }
-          },
+                    );
+                  }
+                case BrandLiteracyStatus.error:
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 60,
+                          color: Colors.red,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Error: ${state.errorMessage}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<BrandLiteracyBloc>().add(
+                              FetchBrandLiteracy(
+                                brandId: widget.searchResult.id,
+                              ),
+                            );
+                          },
+                          child: const Text('Try Again'),
+                        ),
+                      ],
+                    ),
+                  );
+              }
+            },
+          ),
         ),
       ),
     );
@@ -129,44 +172,101 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
 
   Widget _buildBrandLiteracyDetails(
     BuildContext context,
-    BrandLiteracy brandLiteracy,
-    int brandScore,
+    BrandLiteracy
+    brandLiteracy, // Should be non-null when called from loaded state
+    int animatedScore, // Score for gauge animation
+    String finalScoreNote, // Pre-calculated note based on final score
   ) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       children: [
-        // Top 2/3 of the screen with the gauge
         Expanded(
           flex: 20,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 12),
-              Text(
-                brandLiteracy.name,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CachedNetworkImage(
+                      // Use null check for safety, though it should be non-null here
+                      imageUrl: brandLiteracy.logoUrl ?? "",
+                      width: 40,
+                      height: 40,
+                      placeholder:
+                          (context, url) => const SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.0,
+                              ),
+                            ),
+                          ),
+                      errorWidget:
+                          (context, url, error) =>
+                              Container(), // Empty container on error
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      brandLiteracy
+                          .name, // Removed '??' as brandLiteracy is guaranteed non-null here
+                      style: GoogleFonts.permanentMarker(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                      overflow:
+                          TextOverflow.ellipsis, // Handle potential overflow
+                      maxLines: 1, // Allow up to 2 lines for the name
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
-              // Gauge with graduations
-              Expanded(child: Center(child: _buildGauge(context, brandScore))),
+              const SizedBox(height: 8),
+              Divider(),
+              Expanded(
+                child: Center(child: _buildGauge(context, animatedScore)),
+              ), // Use animated score for gauge
             ],
           ),
         ),
-
-        // Bottom 1/3 of the screen (white space for now)
-        Expanded(flex: 10, child: Container(color: Colors.white)),
+        Divider(),
+        Expanded(
+          flex: 10,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(l10n.ourOpinion),
+                const SizedBox(height: 4),
+                Text(
+                  finalScoreNote, // Use the passed final score note
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 5,
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Widget _buildGauge(BuildContext context, int score) {
-    // Calculate how many graduations should be filled based on score
-    // Score is 0-10, we have 20 graduations, so each point is 2 graduations
     final filledGraduations = (score * 2).clamp(0, 20);
 
-    // Gauge
     return Stack(
       children: [
         Padding(
@@ -174,26 +274,27 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 35),
+              SizedBox(height: 12),
               ...List.generate(20, (index) {
-                // Index 0 is the bottom graduation, 19 is the top
                 final isActive = index < filledGraduations;
-                // Use green for active bars (higher score is better) and red for inactive
                 final graduationColor =
                     isActive ? Colors.green : Colors.red.shade700;
 
                 return Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 2),
-                    decoration: BoxDecoration(
-                      color: graduationColor,
-                      borderRadius: BorderRadius.circular(8),
+                  child: Center(
+                    child: Container(
+                      width: 180,
+                      margin: const EdgeInsets.symmetric(vertical: 2),
+                      decoration: BoxDecoration(
+                        color: graduationColor,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                 );
               }).reversed.toList(),
-              SizedBox(height: 35),
-            ], // Reverse to have 0 at bottom, 19 at top
+              SizedBox(height: 12),
+            ],
           ),
         ),
         Align(
@@ -214,5 +315,41 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
         ),
       ],
     );
+  }
+
+  String _getLocalizedString(AppLocalizations l10n, String? key) {
+    if (key == null) return "";
+    switch (key) {
+      case "note12":
+        return l10n.note12;
+      case "note34":
+        return l10n.note34;
+      case "note56":
+        return l10n.note56;
+      case "note78":
+        return l10n.note78;
+      case "note910":
+        return l10n.note910;
+      case "errorLoadingData":
+        return l10n.errorLoadingData;
+      default:
+        return "";
+    }
+  }
+
+  String? _getScoreNoteKey(int score) {
+    if (score >= 1 && score <= 2) {
+      return "note12";
+    } else if (score >= 3 && score <= 4) {
+      return "note34";
+    } else if (score >= 5 && score <= 6) {
+      return "note56";
+    } else if (score >= 7 && score <= 8) {
+      return "note78";
+    } else if (score >= 9 && score <= 10) {
+      return "note910";
+    } else {
+      return null;
+    }
   }
 }

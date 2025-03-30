@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:go_router/go_router.dart";
+import "package:dont_feed_donald/main.dart"; // Import main to access routeObserver
 import "package:dont_feed_donald/core/routes/app_router.dart";
 import "package:dont_feed_donald/core/theme/app_theme.dart";
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
@@ -15,9 +16,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, RouteAware {
   // Reference to the sliding search panel state
-  final GlobalKey<SlidingSearchPanelState> _searchPanelKey = GlobalKey<SlidingSearchPanelState>();
+  final GlobalKey<SlidingSearchPanelState> _searchPanelKey =
+      GlobalKey<SlidingSearchPanelState>();
   late AnimationController _controller;
   late Animation<double> _animation;
   bool _isPanelVisible = false;
@@ -33,9 +35,32 @@ class _HomePageState extends State<HomePage>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to the RouteObserver
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
   void dispose() {
+    // Unsubscribe from the RouteObserver
+    routeObserver.unsubscribe(this);
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // Called when the top route has been popped and this route is shown again.
+    // If the search panel was visible when we left, close it now.
+    if (_isPanelVisible) {
+      // Use WidgetsBinding to ensure setState is called after the build phase
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _toggleSearchPanel();
+        }
+      });
+    }
   }
 
   void _toggleSearchPanel() {
@@ -102,7 +127,7 @@ class _HomePageState extends State<HomePage>
                               children: [
                                 const SizedBox(height: 16),
                                 Text(
-                                  "Dites-nous quelle marque vous comptez acheter, et on vous dira si c'est bon pour Donald ou si cela va contrinber à l'engraisser",
+                                  "Dites-nous quelle marque vous comptez acheter, et on vous dira si c'est bon pour Donald ou si cela va contribuer à l'engraisser",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -229,9 +254,10 @@ class _HomePageState extends State<HomePage>
                         _isPanelVisible ? Icons.close : Icons.settings,
                         color: Colors.white,
                       ),
-                      onPressed: _isPanelVisible
-                          ? _toggleSearchPanel
-                          : () => context.go(AppRouter.settings),
+                      onPressed:
+                          _isPanelVisible
+                              ? _toggleSearchPanel
+                              : () => context.go(AppRouter.settings),
                     ),
                   ),
                 ],
