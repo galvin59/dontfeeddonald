@@ -36,8 +36,8 @@
   "euEmployeesLabel": "La marque crée de l'emploi dans la \"vieille\" basse-cour ?",
   "usFactoryLabel": "La marque a-t-elle des usines dans la basse-cour de Donald ?",
   "euFactoryLabel": "La marque a-t-elle des usines dans la \"vieille\" basse-cour ?",
-  "usSupplierLabel": "La marque s'a-t-elle des fournisseurs dans la basse-cour de Donald ?",
-  "euSupplierLabel": "La marque s'a-t-elle des fournisseurs dans la \"vieille\" basse-cour ?",
+  "usSupplierLabel": "La marque a-t-elle des fournisseurs dans la basse-cour de Donald ?",
+  "euSupplierLabel": "La marque a-t-elle des fournisseurs dans la \"vieille\" basse-cour ?",
   "closeButtonLabel": "Fermer",
   "unknownCountryCode": "{countryCode} (Inconnue)",
   "@unknownCountryCode": {

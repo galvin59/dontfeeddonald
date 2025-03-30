@@ -38,6 +38,14 @@ migrate_working_dir/
 .pub/
 /build/
 
+# Application specific files
+.metadata
+.packages
+/keystore/
+
+# Avoid mixing clean and build states in the same commit
+/build/
+
 # Symbolication related
 app.*.symbols
 
