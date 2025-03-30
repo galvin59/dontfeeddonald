@@ -6,7 +6,7 @@ This module provides functions to interact with the database for brand operation
 
 import os
 from datetime import datetime
-from sqlalchemy import create_engine, select, update
+from sqlalchemy import create_engine, select, update, or_
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from typing import List, Optional, Dict, Any, Tuple
@@ -14,6 +14,24 @@ from typing import List, Optional, Dict, Any, Tuple
 from app.models import BrandLiteracy, Base
 
 # Database connection
+# Define fields to check for incompleteness
+# Keep this consistent with the BrandLiteracy model
+TEXT_FIELDS_TO_CHECK = [
+    "parentCompany",
+    "brandOrigin",
+    "logoUrl",
+    "productFamily" # Added as it's in the model now
+]
+
+BOOLEAN_FIELDS_TO_CHECK = [
+    "usEmployees",
+    "euEmployees",
+    "usFactory",
+    "euFactory",
+    "usSupplier",
+    "euSupplier"
+]
+
 def get_db_connection_string():
     """Get the database connection string from environment variables."""
     # Always use 'postgresql' as the dialect name for SQLAlchemy (not 'postgres')
@@ -52,95 +70,49 @@ def get_incomplete_brands(session, limit: int = 10, field: Optional[str] = None)
     """
     query = select(BrandLiteracy)
     
-    # Filter based on the required field
-    if field == "parentCompany":
-        query = query.where(
-            (BrandLiteracy.parentCompany == None) | 
-            (BrandLiteracy.parentCompany == "") | 
-            (BrandLiteracy.parentCompany == "Unknown")
-        )
-    elif field == "brandOrigin":
-        query = query.where(
-            (BrandLiteracy.brandOrigin == None) | 
-            (BrandLiteracy.brandOrigin == "") | 
-            (BrandLiteracy.brandOrigin == "Unknown")
-        )
-    elif field == "logoUrl":
-        query = query.where(
-            (BrandLiteracy.logoUrl == None) | 
-            (BrandLiteracy.logoUrl == "")
-        )
-    elif field == "similarBrandsEu":
-        query = query.where(
-            (BrandLiteracy.similarBrandsEu == None) | 
-            (BrandLiteracy.similarBrandsEu == "")
-        )
-    elif field == "totalEmployees":
-        query = query.where(
-            (BrandLiteracy.totalEmployees == None) | 
-            (BrandLiteracy.totalEmployees == "")
-        )
-    elif field == "employeesUS":
-        query = query.where(
-            (BrandLiteracy.employeesUS == None) | 
-            (BrandLiteracy.employeesUS == "")
-        )
-    elif field == "economicImpact":
-        query = query.where(
-            (BrandLiteracy.economicImpact == None) | 
-            (BrandLiteracy.economicImpact == "")
-        )
-    elif field == "factoryInFrance":
-        query = query.where(
-            (BrandLiteracy.factoryInFrance == None)
-        )
-    elif field == "factoryInEU":
-        query = query.where(
-            (BrandLiteracy.factoryInEU == None)
-        )
-    elif field == "frenchFarmer":
-        query = query.where(
-            (BrandLiteracy.frenchFarmer == None)
-        )
-    elif field == "euFarmer":
-        query = query.where(
-            (BrandLiteracy.euFarmer == None)
-        )
-    # No specific field, get any brand with any missing field
+    # If a specific field is provided, filter for that field being incomplete
+    if field:
+        field_attr = getattr(BrandLiteracy, field, None)
+        if field_attr is None:
+            raise ValueError(f"Invalid field name: {field}")
+        
+        if field in TEXT_FIELDS_TO_CHECK:
+            # Handle special case for parentCompany and brandOrigin needing 'Unknown' check
+            if field in ["parentCompany", "brandOrigin"]:
+                query = query.where(
+                    (field_attr == None) | (field_attr == "") | (field_attr == "Unknown")
+                )
+            else:
+                query = query.where(
+                    (field_attr == None) | (field_attr == "")
+                )
+        elif field in BOOLEAN_FIELDS_TO_CHECK:
+            query = query.where(field_attr == None)
+        # If field is not in TEXT or BOOLEAN checks, it's likely valid but not checked for incompleteness here
+        # e.g., name, id, created_at, updated_at
+        
     else:
-        # Separate text and boolean field conditions for clarity
-        text_fields_condition = (
-            (BrandLiteracy.parentCompany == None) | 
-            (BrandLiteracy.parentCompany == "") | 
-            (BrandLiteracy.parentCompany == "Unknown") |
-            (BrandLiteracy.brandOrigin == None) | 
-            (BrandLiteracy.brandOrigin == "") | 
-            (BrandLiteracy.brandOrigin == "Unknown") |
-            (BrandLiteracy.logoUrl == None) | 
-            (BrandLiteracy.logoUrl == "") |
-            (BrandLiteracy.similarBrandsEu == None) | 
-            (BrandLiteracy.similarBrandsEu == "") |
-            (BrandLiteracy.totalEmployees == None) | 
-            (BrandLiteracy.totalEmployees == "") |
-            (BrandLiteracy.employeesUS == None) | 
-            (BrandLiteracy.employeesUS == "") |
-            (BrandLiteracy.economicImpact == None) | 
-            (BrandLiteracy.economicImpact == "")
-        )
+        # No specific field provided, find brands missing ANY of the checkable fields
+        conditions = []
+        # Text fields (check for None, empty, and sometimes 'Unknown')
+        for text_field in TEXT_FIELDS_TO_CHECK:
+            field_attr = getattr(BrandLiteracy, text_field)
+            if text_field in ["parentCompany", "brandOrigin"]:
+                conditions.append((field_attr == None) | (field_attr == "") | (field_attr == "Unknown"))
+            else:
+                conditions.append((field_attr == None) | (field_attr == ""))
         
-        # Boolean fields only need to check for NULL (not empty string)
-        boolean_fields_condition = (
-            (BrandLiteracy.factoryInFrance == None) |
-            (BrandLiteracy.factoryInEU == None) |
-            (BrandLiteracy.frenchFarmer == None) |
-            (BrandLiteracy.euFarmer == None)
-        )
+        # Boolean fields (check for None)
+        for bool_field in BOOLEAN_FIELDS_TO_CHECK:
+            field_attr = getattr(BrandLiteracy, bool_field)
+            conditions.append(field_attr == None)
         
-        # Combine all conditions
-        query = query.where(text_fields_condition | boolean_fields_condition)
+        # Combine all conditions with OR
+        if conditions:
+            query = query.where(or_(*conditions))
     
-    # Limit the results
-    query = query.limit(limit)
+    # Order by update timestamp (oldest first)
+    query = query.order_by(BrandLiteracy.updatedAt.asc()).limit(limit)
     
     return list(session.execute(query).scalars().all())
 

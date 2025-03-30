@@ -104,5 +104,55 @@
   "@brandNameHint": {
     "description": "Hint text for brand name input"
   },
-  "errorLoadingData": "Error loading brand details"
+  "errorLoadingData": "Error loading brand details",
+  "scoreBreakdownTitle": "Score Breakdown",
+  "@scoreBreakdownTitle": {
+    "description": "Title for score breakdown modal"
+  },
+  "brandOriginLabel": "Yard of origin",
+  "@brandOriginLabel": {
+    "description": "Label for brand origin"
+  },
+  "usEmployeesLabel": "Does the brand create jobs in Donald's yard?",
+  "@usEmployeesLabel": {
+    "description": "Label for US employees"
+  },
+  "euEmployeesLabel": "Does the brand create jobs in the 'old' yard?",
+  "@euEmployeesLabel": {
+    "description": "Label for EU employees"
+  },
+  "usFactoryLabel": "Does the brand manufacture in Donald's yard?",
+  "@usFactoryLabel": {
+    "description": "Label for US factory"
+  },
+  "euFactoryLabel": "Does the brand manufacture in the 'old' yard?",
+  "@euFactoryLabel": {
+    "description": "Label for EU factory"
+  },
+  "usSupplierLabel": "Does the brand source from Donald's yard?",
+  "@usSupplierLabel": {
+    "description": "Label for US supplier"
+  },
+  "euSupplierLabel": "Does the brand source from the 'old' yard?",
+  "@euSupplierLabel": {
+    "description": "Label for EU supplier"
+  },
+  "closeButtonLabel": "Close",
+  "@closeButtonLabel": {
+    "description": "Label for close button"
+  },
+  "unknownCountryCode": "{countryCode} (Unknown)",
+  "@unknownCountryCode": {
+    "description": "Label for when the country code is known but the flag/name isn't.",
+    "placeholders": {
+      "countryCode": {
+        "type": "String",
+        "example": "XX"
+      }
+    }
+  },
+  "aiDisclaimer": "This information was retrieved by an ADI (Artificial Duck Intelligence), so please take it with the necessary caution!",
+  "@aiDisclaimer": {
+    "description": "Disclaimer about the source of the information being AI."
+  }
 }

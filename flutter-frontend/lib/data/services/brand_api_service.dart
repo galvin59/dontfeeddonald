@@ -142,10 +142,10 @@ class BrandApiService {
         // Extract the score from the response
         final int? score = data['score'] as int?;
         
-        // Remove the score from the data before converting to BrandLiteracy
-        if (data.containsKey('score')) {
-          data.remove('score');
-        }
+        // Keep the score in the data for BrandLiteracy.fromJson
+        // if (data.containsKey('score')) {
+        //   data.remove('score');
+        // }
         
         // Convert to BrandLiteracy object and return with score
         return {

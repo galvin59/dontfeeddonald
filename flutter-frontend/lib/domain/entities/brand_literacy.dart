@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'similar_brands_converter.dart';
 
 part 'brand_literacy.freezed.dart';
 part 'brand_literacy.g.dart';
@@ -12,28 +11,26 @@ class BrandLiteracy with _$BrandLiteracy {
     String? parentCompany,
     String? brandOrigin,
     String? logoUrl,
-    @SimilarBrandsConverter()
-    List<String>? similarBrandsEu,
     String? productFamily,
-    String? totalEmployees,
-    String? totalEmployeesSource,
-    String? employeesUS,
-    String? employeesUSSource,
-    String? economicImpact,
-    String? economicImpactSource,
-    bool? factoryInFrance,
-    String? factoryInFranceSource,
-    bool? factoryInEU,
-    String? factoryInEUSource,
-    bool? frenchFarmer,
-    String? frenchFarmerSource,
-    bool? euFarmer,
-    String? euFarmerSource,
+    bool? usEmployees,
+    String? usEmployeesSource,
+    bool? euEmployees,
+    String? euEmployeesSource,
+    bool? usFactory,
+    String? usFactorySource,
+    bool? euFactory,
+    String? euFactorySource,
+    bool? usSupplier,
+    String? usSupplierSource,
+    bool? euSupplier,
+    String? euSupplierSource,
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? isEnabled,
     bool? isError,
+    int? score,
   }) = _BrandLiteracy;
 
-  factory BrandLiteracy.fromJson(Map<String, dynamic> json) => _$BrandLiteracyFromJson(json);
+  factory BrandLiteracy.fromJson(Map<String, dynamic> json) =>
+      _$BrandLiteracyFromJson(json);
 }

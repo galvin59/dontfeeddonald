@@ -26,27 +26,24 @@ mixin _$BrandLiteracy {
   String? get parentCompany => throw _privateConstructorUsedError;
   String? get brandOrigin => throw _privateConstructorUsedError;
   String? get logoUrl => throw _privateConstructorUsedError;
-  @SimilarBrandsConverter()
-  List<String>? get similarBrandsEu => throw _privateConstructorUsedError;
   String? get productFamily => throw _privateConstructorUsedError;
-  String? get totalEmployees => throw _privateConstructorUsedError;
-  String? get totalEmployeesSource => throw _privateConstructorUsedError;
-  String? get employeesUS => throw _privateConstructorUsedError;
-  String? get employeesUSSource => throw _privateConstructorUsedError;
-  String? get economicImpact => throw _privateConstructorUsedError;
-  String? get economicImpactSource => throw _privateConstructorUsedError;
-  bool? get factoryInFrance => throw _privateConstructorUsedError;
-  String? get factoryInFranceSource => throw _privateConstructorUsedError;
-  bool? get factoryInEU => throw _privateConstructorUsedError;
-  String? get factoryInEUSource => throw _privateConstructorUsedError;
-  bool? get frenchFarmer => throw _privateConstructorUsedError;
-  String? get frenchFarmerSource => throw _privateConstructorUsedError;
-  bool? get euFarmer => throw _privateConstructorUsedError;
-  String? get euFarmerSource => throw _privateConstructorUsedError;
+  bool? get usEmployees => throw _privateConstructorUsedError;
+  String? get usEmployeesSource => throw _privateConstructorUsedError;
+  bool? get euEmployees => throw _privateConstructorUsedError;
+  String? get euEmployeesSource => throw _privateConstructorUsedError;
+  bool? get usFactory => throw _privateConstructorUsedError;
+  String? get usFactorySource => throw _privateConstructorUsedError;
+  bool? get euFactory => throw _privateConstructorUsedError;
+  String? get euFactorySource => throw _privateConstructorUsedError;
+  bool? get usSupplier => throw _privateConstructorUsedError;
+  String? get usSupplierSource => throw _privateConstructorUsedError;
+  bool? get euSupplier => throw _privateConstructorUsedError;
+  String? get euSupplierSource => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   bool? get isEnabled => throw _privateConstructorUsedError;
   bool? get isError => throw _privateConstructorUsedError;
+  int? get score => throw _privateConstructorUsedError;
 
   /// Serializes this BrandLiteracy to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -71,26 +68,24 @@ abstract class $BrandLiteracyCopyWith<$Res> {
     String? parentCompany,
     String? brandOrigin,
     String? logoUrl,
-    @SimilarBrandsConverter() List<String>? similarBrandsEu,
     String? productFamily,
-    String? totalEmployees,
-    String? totalEmployeesSource,
-    String? employeesUS,
-    String? employeesUSSource,
-    String? economicImpact,
-    String? economicImpactSource,
-    bool? factoryInFrance,
-    String? factoryInFranceSource,
-    bool? factoryInEU,
-    String? factoryInEUSource,
-    bool? frenchFarmer,
-    String? frenchFarmerSource,
-    bool? euFarmer,
-    String? euFarmerSource,
+    bool? usEmployees,
+    String? usEmployeesSource,
+    bool? euEmployees,
+    String? euEmployeesSource,
+    bool? usFactory,
+    String? usFactorySource,
+    bool? euFactory,
+    String? euFactorySource,
+    bool? usSupplier,
+    String? usSupplierSource,
+    bool? euSupplier,
+    String? euSupplierSource,
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? isEnabled,
     bool? isError,
+    int? score,
   });
 }
 
@@ -114,26 +109,24 @@ class _$BrandLiteracyCopyWithImpl<$Res, $Val extends BrandLiteracy>
     Object? parentCompany = freezed,
     Object? brandOrigin = freezed,
     Object? logoUrl = freezed,
-    Object? similarBrandsEu = freezed,
     Object? productFamily = freezed,
-    Object? totalEmployees = freezed,
-    Object? totalEmployeesSource = freezed,
-    Object? employeesUS = freezed,
-    Object? employeesUSSource = freezed,
-    Object? economicImpact = freezed,
-    Object? economicImpactSource = freezed,
-    Object? factoryInFrance = freezed,
-    Object? factoryInFranceSource = freezed,
-    Object? factoryInEU = freezed,
-    Object? factoryInEUSource = freezed,
-    Object? frenchFarmer = freezed,
-    Object? frenchFarmerSource = freezed,
-    Object? euFarmer = freezed,
-    Object? euFarmerSource = freezed,
+    Object? usEmployees = freezed,
+    Object? usEmployeesSource = freezed,
+    Object? euEmployees = freezed,
+    Object? euEmployeesSource = freezed,
+    Object? usFactory = freezed,
+    Object? usFactorySource = freezed,
+    Object? euFactory = freezed,
+    Object? euFactorySource = freezed,
+    Object? usSupplier = freezed,
+    Object? usSupplierSource = freezed,
+    Object? euSupplier = freezed,
+    Object? euSupplierSource = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? isEnabled = freezed,
     Object? isError = freezed,
+    Object? score = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -162,85 +155,70 @@ class _$BrandLiteracyCopyWithImpl<$Res, $Val extends BrandLiteracy>
                     ? _value.logoUrl
                     : logoUrl // ignore: cast_nullable_to_non_nullable
                         as String?,
-            similarBrandsEu:
-                freezed == similarBrandsEu
-                    ? _value.similarBrandsEu
-                    : similarBrandsEu // ignore: cast_nullable_to_non_nullable
-                        as List<String>?,
             productFamily:
                 freezed == productFamily
                     ? _value.productFamily
                     : productFamily // ignore: cast_nullable_to_non_nullable
                         as String?,
-            totalEmployees:
-                freezed == totalEmployees
-                    ? _value.totalEmployees
-                    : totalEmployees // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            totalEmployeesSource:
-                freezed == totalEmployeesSource
-                    ? _value.totalEmployeesSource
-                    : totalEmployeesSource // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            employeesUS:
-                freezed == employeesUS
-                    ? _value.employeesUS
-                    : employeesUS // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            employeesUSSource:
-                freezed == employeesUSSource
-                    ? _value.employeesUSSource
-                    : employeesUSSource // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            economicImpact:
-                freezed == economicImpact
-                    ? _value.economicImpact
-                    : economicImpact // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            economicImpactSource:
-                freezed == economicImpactSource
-                    ? _value.economicImpactSource
-                    : economicImpactSource // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            factoryInFrance:
-                freezed == factoryInFrance
-                    ? _value.factoryInFrance
-                    : factoryInFrance // ignore: cast_nullable_to_non_nullable
+            usEmployees:
+                freezed == usEmployees
+                    ? _value.usEmployees
+                    : usEmployees // ignore: cast_nullable_to_non_nullable
                         as bool?,
-            factoryInFranceSource:
-                freezed == factoryInFranceSource
-                    ? _value.factoryInFranceSource
-                    : factoryInFranceSource // ignore: cast_nullable_to_non_nullable
+            usEmployeesSource:
+                freezed == usEmployeesSource
+                    ? _value.usEmployeesSource
+                    : usEmployeesSource // ignore: cast_nullable_to_non_nullable
                         as String?,
-            factoryInEU:
-                freezed == factoryInEU
-                    ? _value.factoryInEU
-                    : factoryInEU // ignore: cast_nullable_to_non_nullable
+            euEmployees:
+                freezed == euEmployees
+                    ? _value.euEmployees
+                    : euEmployees // ignore: cast_nullable_to_non_nullable
                         as bool?,
-            factoryInEUSource:
-                freezed == factoryInEUSource
-                    ? _value.factoryInEUSource
-                    : factoryInEUSource // ignore: cast_nullable_to_non_nullable
+            euEmployeesSource:
+                freezed == euEmployeesSource
+                    ? _value.euEmployeesSource
+                    : euEmployeesSource // ignore: cast_nullable_to_non_nullable
                         as String?,
-            frenchFarmer:
-                freezed == frenchFarmer
-                    ? _value.frenchFarmer
-                    : frenchFarmer // ignore: cast_nullable_to_non_nullable
+            usFactory:
+                freezed == usFactory
+                    ? _value.usFactory
+                    : usFactory // ignore: cast_nullable_to_non_nullable
                         as bool?,
-            frenchFarmerSource:
-                freezed == frenchFarmerSource
-                    ? _value.frenchFarmerSource
-                    : frenchFarmerSource // ignore: cast_nullable_to_non_nullable
+            usFactorySource:
+                freezed == usFactorySource
+                    ? _value.usFactorySource
+                    : usFactorySource // ignore: cast_nullable_to_non_nullable
                         as String?,
-            euFarmer:
-                freezed == euFarmer
-                    ? _value.euFarmer
-                    : euFarmer // ignore: cast_nullable_to_non_nullable
+            euFactory:
+                freezed == euFactory
+                    ? _value.euFactory
+                    : euFactory // ignore: cast_nullable_to_non_nullable
                         as bool?,
-            euFarmerSource:
-                freezed == euFarmerSource
-                    ? _value.euFarmerSource
-                    : euFarmerSource // ignore: cast_nullable_to_non_nullable
+            euFactorySource:
+                freezed == euFactorySource
+                    ? _value.euFactorySource
+                    : euFactorySource // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            usSupplier:
+                freezed == usSupplier
+                    ? _value.usSupplier
+                    : usSupplier // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+            usSupplierSource:
+                freezed == usSupplierSource
+                    ? _value.usSupplierSource
+                    : usSupplierSource // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            euSupplier:
+                freezed == euSupplier
+                    ? _value.euSupplier
+                    : euSupplier // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+            euSupplierSource:
+                freezed == euSupplierSource
+                    ? _value.euSupplierSource
+                    : euSupplierSource // ignore: cast_nullable_to_non_nullable
                         as String?,
             createdAt:
                 freezed == createdAt
@@ -262,6 +240,11 @@ class _$BrandLiteracyCopyWithImpl<$Res, $Val extends BrandLiteracy>
                     ? _value.isError
                     : isError // ignore: cast_nullable_to_non_nullable
                         as bool?,
+            score:
+                freezed == score
+                    ? _value.score
+                    : score // ignore: cast_nullable_to_non_nullable
+                        as int?,
           )
           as $Val,
     );
@@ -283,26 +266,24 @@ abstract class _$$BrandLiteracyImplCopyWith<$Res>
     String? parentCompany,
     String? brandOrigin,
     String? logoUrl,
-    @SimilarBrandsConverter() List<String>? similarBrandsEu,
     String? productFamily,
-    String? totalEmployees,
-    String? totalEmployeesSource,
-    String? employeesUS,
-    String? employeesUSSource,
-    String? economicImpact,
-    String? economicImpactSource,
-    bool? factoryInFrance,
-    String? factoryInFranceSource,
-    bool? factoryInEU,
-    String? factoryInEUSource,
-    bool? frenchFarmer,
-    String? frenchFarmerSource,
-    bool? euFarmer,
-    String? euFarmerSource,
+    bool? usEmployees,
+    String? usEmployeesSource,
+    bool? euEmployees,
+    String? euEmployeesSource,
+    bool? usFactory,
+    String? usFactorySource,
+    bool? euFactory,
+    String? euFactorySource,
+    bool? usSupplier,
+    String? usSupplierSource,
+    bool? euSupplier,
+    String? euSupplierSource,
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? isEnabled,
     bool? isError,
+    int? score,
   });
 }
 
@@ -325,26 +306,24 @@ class __$$BrandLiteracyImplCopyWithImpl<$Res>
     Object? parentCompany = freezed,
     Object? brandOrigin = freezed,
     Object? logoUrl = freezed,
-    Object? similarBrandsEu = freezed,
     Object? productFamily = freezed,
-    Object? totalEmployees = freezed,
-    Object? totalEmployeesSource = freezed,
-    Object? employeesUS = freezed,
-    Object? employeesUSSource = freezed,
-    Object? economicImpact = freezed,
-    Object? economicImpactSource = freezed,
-    Object? factoryInFrance = freezed,
-    Object? factoryInFranceSource = freezed,
-    Object? factoryInEU = freezed,
-    Object? factoryInEUSource = freezed,
-    Object? frenchFarmer = freezed,
-    Object? frenchFarmerSource = freezed,
-    Object? euFarmer = freezed,
-    Object? euFarmerSource = freezed,
+    Object? usEmployees = freezed,
+    Object? usEmployeesSource = freezed,
+    Object? euEmployees = freezed,
+    Object? euEmployeesSource = freezed,
+    Object? usFactory = freezed,
+    Object? usFactorySource = freezed,
+    Object? euFactory = freezed,
+    Object? euFactorySource = freezed,
+    Object? usSupplier = freezed,
+    Object? usSupplierSource = freezed,
+    Object? euSupplier = freezed,
+    Object? euSupplierSource = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? isEnabled = freezed,
     Object? isError = freezed,
+    Object? score = freezed,
   }) {
     return _then(
       _$BrandLiteracyImpl(
@@ -373,85 +352,70 @@ class __$$BrandLiteracyImplCopyWithImpl<$Res>
                 ? _value.logoUrl
                 : logoUrl // ignore: cast_nullable_to_non_nullable
                     as String?,
-        similarBrandsEu:
-            freezed == similarBrandsEu
-                ? _value._similarBrandsEu
-                : similarBrandsEu // ignore: cast_nullable_to_non_nullable
-                    as List<String>?,
         productFamily:
             freezed == productFamily
                 ? _value.productFamily
                 : productFamily // ignore: cast_nullable_to_non_nullable
                     as String?,
-        totalEmployees:
-            freezed == totalEmployees
-                ? _value.totalEmployees
-                : totalEmployees // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        totalEmployeesSource:
-            freezed == totalEmployeesSource
-                ? _value.totalEmployeesSource
-                : totalEmployeesSource // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        employeesUS:
-            freezed == employeesUS
-                ? _value.employeesUS
-                : employeesUS // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        employeesUSSource:
-            freezed == employeesUSSource
-                ? _value.employeesUSSource
-                : employeesUSSource // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        economicImpact:
-            freezed == economicImpact
-                ? _value.economicImpact
-                : economicImpact // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        economicImpactSource:
-            freezed == economicImpactSource
-                ? _value.economicImpactSource
-                : economicImpactSource // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        factoryInFrance:
-            freezed == factoryInFrance
-                ? _value.factoryInFrance
-                : factoryInFrance // ignore: cast_nullable_to_non_nullable
+        usEmployees:
+            freezed == usEmployees
+                ? _value.usEmployees
+                : usEmployees // ignore: cast_nullable_to_non_nullable
                     as bool?,
-        factoryInFranceSource:
-            freezed == factoryInFranceSource
-                ? _value.factoryInFranceSource
-                : factoryInFranceSource // ignore: cast_nullable_to_non_nullable
+        usEmployeesSource:
+            freezed == usEmployeesSource
+                ? _value.usEmployeesSource
+                : usEmployeesSource // ignore: cast_nullable_to_non_nullable
                     as String?,
-        factoryInEU:
-            freezed == factoryInEU
-                ? _value.factoryInEU
-                : factoryInEU // ignore: cast_nullable_to_non_nullable
+        euEmployees:
+            freezed == euEmployees
+                ? _value.euEmployees
+                : euEmployees // ignore: cast_nullable_to_non_nullable
                     as bool?,
-        factoryInEUSource:
-            freezed == factoryInEUSource
-                ? _value.factoryInEUSource
-                : factoryInEUSource // ignore: cast_nullable_to_non_nullable
+        euEmployeesSource:
+            freezed == euEmployeesSource
+                ? _value.euEmployeesSource
+                : euEmployeesSource // ignore: cast_nullable_to_non_nullable
                     as String?,
-        frenchFarmer:
-            freezed == frenchFarmer
-                ? _value.frenchFarmer
-                : frenchFarmer // ignore: cast_nullable_to_non_nullable
+        usFactory:
+            freezed == usFactory
+                ? _value.usFactory
+                : usFactory // ignore: cast_nullable_to_non_nullable
                     as bool?,
-        frenchFarmerSource:
-            freezed == frenchFarmerSource
-                ? _value.frenchFarmerSource
-                : frenchFarmerSource // ignore: cast_nullable_to_non_nullable
+        usFactorySource:
+            freezed == usFactorySource
+                ? _value.usFactorySource
+                : usFactorySource // ignore: cast_nullable_to_non_nullable
                     as String?,
-        euFarmer:
-            freezed == euFarmer
-                ? _value.euFarmer
-                : euFarmer // ignore: cast_nullable_to_non_nullable
+        euFactory:
+            freezed == euFactory
+                ? _value.euFactory
+                : euFactory // ignore: cast_nullable_to_non_nullable
                     as bool?,
-        euFarmerSource:
-            freezed == euFarmerSource
-                ? _value.euFarmerSource
-                : euFarmerSource // ignore: cast_nullable_to_non_nullable
+        euFactorySource:
+            freezed == euFactorySource
+                ? _value.euFactorySource
+                : euFactorySource // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        usSupplier:
+            freezed == usSupplier
+                ? _value.usSupplier
+                : usSupplier // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+        usSupplierSource:
+            freezed == usSupplierSource
+                ? _value.usSupplierSource
+                : usSupplierSource // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        euSupplier:
+            freezed == euSupplier
+                ? _value.euSupplier
+                : euSupplier // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+        euSupplierSource:
+            freezed == euSupplierSource
+                ? _value.euSupplierSource
+                : euSupplierSource // ignore: cast_nullable_to_non_nullable
                     as String?,
         createdAt:
             freezed == createdAt
@@ -473,6 +437,11 @@ class __$$BrandLiteracyImplCopyWithImpl<$Res>
                 ? _value.isError
                 : isError // ignore: cast_nullable_to_non_nullable
                     as bool?,
+        score:
+            freezed == score
+                ? _value.score
+                : score // ignore: cast_nullable_to_non_nullable
+                    as int?,
       ),
     );
   }
@@ -487,27 +456,25 @@ class _$BrandLiteracyImpl implements _BrandLiteracy {
     this.parentCompany,
     this.brandOrigin,
     this.logoUrl,
-    @SimilarBrandsConverter() final List<String>? similarBrandsEu,
     this.productFamily,
-    this.totalEmployees,
-    this.totalEmployeesSource,
-    this.employeesUS,
-    this.employeesUSSource,
-    this.economicImpact,
-    this.economicImpactSource,
-    this.factoryInFrance,
-    this.factoryInFranceSource,
-    this.factoryInEU,
-    this.factoryInEUSource,
-    this.frenchFarmer,
-    this.frenchFarmerSource,
-    this.euFarmer,
-    this.euFarmerSource,
+    this.usEmployees,
+    this.usEmployeesSource,
+    this.euEmployees,
+    this.euEmployeesSource,
+    this.usFactory,
+    this.usFactorySource,
+    this.euFactory,
+    this.euFactorySource,
+    this.usSupplier,
+    this.usSupplierSource,
+    this.euSupplier,
+    this.euSupplierSource,
     this.createdAt,
     this.updatedAt,
     this.isEnabled,
     this.isError,
-  }) : _similarBrandsEu = similarBrandsEu;
+    this.score,
+  });
 
   factory _$BrandLiteracyImpl.fromJson(Map<String, dynamic> json) =>
       _$$BrandLiteracyImplFromJson(json);
@@ -522,47 +489,32 @@ class _$BrandLiteracyImpl implements _BrandLiteracy {
   final String? brandOrigin;
   @override
   final String? logoUrl;
-  final List<String>? _similarBrandsEu;
-  @override
-  @SimilarBrandsConverter()
-  List<String>? get similarBrandsEu {
-    final value = _similarBrandsEu;
-    if (value == null) return null;
-    if (_similarBrandsEu is EqualUnmodifiableListView) return _similarBrandsEu;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
   @override
   final String? productFamily;
   @override
-  final String? totalEmployees;
+  final bool? usEmployees;
   @override
-  final String? totalEmployeesSource;
+  final String? usEmployeesSource;
   @override
-  final String? employeesUS;
+  final bool? euEmployees;
   @override
-  final String? employeesUSSource;
+  final String? euEmployeesSource;
   @override
-  final String? economicImpact;
+  final bool? usFactory;
   @override
-  final String? economicImpactSource;
+  final String? usFactorySource;
   @override
-  final bool? factoryInFrance;
+  final bool? euFactory;
   @override
-  final String? factoryInFranceSource;
+  final String? euFactorySource;
   @override
-  final bool? factoryInEU;
+  final bool? usSupplier;
   @override
-  final String? factoryInEUSource;
+  final String? usSupplierSource;
   @override
-  final bool? frenchFarmer;
+  final bool? euSupplier;
   @override
-  final String? frenchFarmerSource;
-  @override
-  final bool? euFarmer;
-  @override
-  final String? euFarmerSource;
+  final String? euSupplierSource;
   @override
   final DateTime? createdAt;
   @override
@@ -571,10 +523,12 @@ class _$BrandLiteracyImpl implements _BrandLiteracy {
   final bool? isEnabled;
   @override
   final bool? isError;
+  @override
+  final int? score;
 
   @override
   String toString() {
-    return 'BrandLiteracy(id: $id, name: $name, parentCompany: $parentCompany, brandOrigin: $brandOrigin, logoUrl: $logoUrl, similarBrandsEu: $similarBrandsEu, productFamily: $productFamily, totalEmployees: $totalEmployees, totalEmployeesSource: $totalEmployeesSource, employeesUS: $employeesUS, employeesUSSource: $employeesUSSource, economicImpact: $economicImpact, economicImpactSource: $economicImpactSource, factoryInFrance: $factoryInFrance, factoryInFranceSource: $factoryInFranceSource, factoryInEU: $factoryInEU, factoryInEUSource: $factoryInEUSource, frenchFarmer: $frenchFarmer, frenchFarmerSource: $frenchFarmerSource, euFarmer: $euFarmer, euFarmerSource: $euFarmerSource, createdAt: $createdAt, updatedAt: $updatedAt, isEnabled: $isEnabled, isError: $isError)';
+    return 'BrandLiteracy(id: $id, name: $name, parentCompany: $parentCompany, brandOrigin: $brandOrigin, logoUrl: $logoUrl, productFamily: $productFamily, usEmployees: $usEmployees, usEmployeesSource: $usEmployeesSource, euEmployees: $euEmployees, euEmployeesSource: $euEmployeesSource, usFactory: $usFactory, usFactorySource: $usFactorySource, euFactory: $euFactory, euFactorySource: $euFactorySource, usSupplier: $usSupplier, usSupplierSource: $usSupplierSource, euSupplier: $euSupplier, euSupplierSource: $euSupplierSource, createdAt: $createdAt, updatedAt: $updatedAt, isEnabled: $isEnabled, isError: $isError, score: $score)';
   }
 
   @override
@@ -589,47 +543,40 @@ class _$BrandLiteracyImpl implements _BrandLiteracy {
             (identical(other.brandOrigin, brandOrigin) ||
                 other.brandOrigin == brandOrigin) &&
             (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
-            const DeepCollectionEquality().equals(
-              other._similarBrandsEu,
-              _similarBrandsEu,
-            ) &&
             (identical(other.productFamily, productFamily) ||
                 other.productFamily == productFamily) &&
-            (identical(other.totalEmployees, totalEmployees) ||
-                other.totalEmployees == totalEmployees) &&
-            (identical(other.totalEmployeesSource, totalEmployeesSource) ||
-                other.totalEmployeesSource == totalEmployeesSource) &&
-            (identical(other.employeesUS, employeesUS) ||
-                other.employeesUS == employeesUS) &&
-            (identical(other.employeesUSSource, employeesUSSource) ||
-                other.employeesUSSource == employeesUSSource) &&
-            (identical(other.economicImpact, economicImpact) ||
-                other.economicImpact == economicImpact) &&
-            (identical(other.economicImpactSource, economicImpactSource) ||
-                other.economicImpactSource == economicImpactSource) &&
-            (identical(other.factoryInFrance, factoryInFrance) ||
-                other.factoryInFrance == factoryInFrance) &&
-            (identical(other.factoryInFranceSource, factoryInFranceSource) ||
-                other.factoryInFranceSource == factoryInFranceSource) &&
-            (identical(other.factoryInEU, factoryInEU) ||
-                other.factoryInEU == factoryInEU) &&
-            (identical(other.factoryInEUSource, factoryInEUSource) ||
-                other.factoryInEUSource == factoryInEUSource) &&
-            (identical(other.frenchFarmer, frenchFarmer) ||
-                other.frenchFarmer == frenchFarmer) &&
-            (identical(other.frenchFarmerSource, frenchFarmerSource) ||
-                other.frenchFarmerSource == frenchFarmerSource) &&
-            (identical(other.euFarmer, euFarmer) ||
-                other.euFarmer == euFarmer) &&
-            (identical(other.euFarmerSource, euFarmerSource) ||
-                other.euFarmerSource == euFarmerSource) &&
+            (identical(other.usEmployees, usEmployees) ||
+                other.usEmployees == usEmployees) &&
+            (identical(other.usEmployeesSource, usEmployeesSource) ||
+                other.usEmployeesSource == usEmployeesSource) &&
+            (identical(other.euEmployees, euEmployees) ||
+                other.euEmployees == euEmployees) &&
+            (identical(other.euEmployeesSource, euEmployeesSource) ||
+                other.euEmployeesSource == euEmployeesSource) &&
+            (identical(other.usFactory, usFactory) ||
+                other.usFactory == usFactory) &&
+            (identical(other.usFactorySource, usFactorySource) ||
+                other.usFactorySource == usFactorySource) &&
+            (identical(other.euFactory, euFactory) ||
+                other.euFactory == euFactory) &&
+            (identical(other.euFactorySource, euFactorySource) ||
+                other.euFactorySource == euFactorySource) &&
+            (identical(other.usSupplier, usSupplier) ||
+                other.usSupplier == usSupplier) &&
+            (identical(other.usSupplierSource, usSupplierSource) ||
+                other.usSupplierSource == usSupplierSource) &&
+            (identical(other.euSupplier, euSupplier) ||
+                other.euSupplier == euSupplier) &&
+            (identical(other.euSupplierSource, euSupplierSource) ||
+                other.euSupplierSource == euSupplierSource) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.isEnabled, isEnabled) ||
                 other.isEnabled == isEnabled) &&
-            (identical(other.isError, isError) || other.isError == isError));
+            (identical(other.isError, isError) || other.isError == isError) &&
+            (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -641,26 +588,24 @@ class _$BrandLiteracyImpl implements _BrandLiteracy {
     parentCompany,
     brandOrigin,
     logoUrl,
-    const DeepCollectionEquality().hash(_similarBrandsEu),
     productFamily,
-    totalEmployees,
-    totalEmployeesSource,
-    employeesUS,
-    employeesUSSource,
-    economicImpact,
-    economicImpactSource,
-    factoryInFrance,
-    factoryInFranceSource,
-    factoryInEU,
-    factoryInEUSource,
-    frenchFarmer,
-    frenchFarmerSource,
-    euFarmer,
-    euFarmerSource,
+    usEmployees,
+    usEmployeesSource,
+    euEmployees,
+    euEmployeesSource,
+    usFactory,
+    usFactorySource,
+    euFactory,
+    euFactorySource,
+    usSupplier,
+    usSupplierSource,
+    euSupplier,
+    euSupplierSource,
     createdAt,
     updatedAt,
     isEnabled,
     isError,
+    score,
   ]);
 
   /// Create a copy of BrandLiteracy
@@ -684,26 +629,24 @@ abstract class _BrandLiteracy implements BrandLiteracy {
     final String? parentCompany,
     final String? brandOrigin,
     final String? logoUrl,
-    @SimilarBrandsConverter() final List<String>? similarBrandsEu,
     final String? productFamily,
-    final String? totalEmployees,
-    final String? totalEmployeesSource,
-    final String? employeesUS,
-    final String? employeesUSSource,
-    final String? economicImpact,
-    final String? economicImpactSource,
-    final bool? factoryInFrance,
-    final String? factoryInFranceSource,
-    final bool? factoryInEU,
-    final String? factoryInEUSource,
-    final bool? frenchFarmer,
-    final String? frenchFarmerSource,
-    final bool? euFarmer,
-    final String? euFarmerSource,
+    final bool? usEmployees,
+    final String? usEmployeesSource,
+    final bool? euEmployees,
+    final String? euEmployeesSource,
+    final bool? usFactory,
+    final String? usFactorySource,
+    final bool? euFactory,
+    final String? euFactorySource,
+    final bool? usSupplier,
+    final String? usSupplierSource,
+    final bool? euSupplier,
+    final String? euSupplierSource,
     final DateTime? createdAt,
     final DateTime? updatedAt,
     final bool? isEnabled,
     final bool? isError,
+    final int? score,
   }) = _$BrandLiteracyImpl;
 
   factory _BrandLiteracy.fromJson(Map<String, dynamic> json) =
@@ -720,38 +663,31 @@ abstract class _BrandLiteracy implements BrandLiteracy {
   @override
   String? get logoUrl;
   @override
-  @SimilarBrandsConverter()
-  List<String>? get similarBrandsEu;
-  @override
   String? get productFamily;
   @override
-  String? get totalEmployees;
+  bool? get usEmployees;
   @override
-  String? get totalEmployeesSource;
+  String? get usEmployeesSource;
   @override
-  String? get employeesUS;
+  bool? get euEmployees;
   @override
-  String? get employeesUSSource;
+  String? get euEmployeesSource;
   @override
-  String? get economicImpact;
+  bool? get usFactory;
   @override
-  String? get economicImpactSource;
+  String? get usFactorySource;
   @override
-  bool? get factoryInFrance;
+  bool? get euFactory;
   @override
-  String? get factoryInFranceSource;
+  String? get euFactorySource;
   @override
-  bool? get factoryInEU;
+  bool? get usSupplier;
   @override
-  String? get factoryInEUSource;
+  String? get usSupplierSource;
   @override
-  bool? get frenchFarmer;
+  bool? get euSupplier;
   @override
-  String? get frenchFarmerSource;
-  @override
-  bool? get euFarmer;
-  @override
-  String? get euFarmerSource;
+  String? get euSupplierSource;
   @override
   DateTime? get createdAt;
   @override
@@ -760,6 +696,8 @@ abstract class _BrandLiteracy implements BrandLiteracy {
   bool? get isEnabled;
   @override
   bool? get isError;
+  @override
+  int? get score;
 
   /// Create a copy of BrandLiteracy
   /// with the given fields replaced by the non-null parameter values.

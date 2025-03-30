@@ -12,6 +12,7 @@ import "package:cached_network_image/cached_network_image.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:go_router/go_router.dart";
 import "package:dont_feed_donald/core/routes/app_router.dart";
+import "package:dont_feed_donald/presentation/widgets/score_breakdown_modal.dart"; // Import the modal
 
 class BrandDetailsPage extends StatefulWidget {
   final BrandSearchResult searchResult;
@@ -34,7 +35,7 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2), // Try 2 seconds
     );
 
     _animationController.addListener(() {
@@ -51,19 +52,20 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
   }
 
   void _setupAndStartAnimation(int finalScore) {
-    // Create a sequence animation: 0 -> 10 -> 5 -> finalScore
+    // Create a sequence animation: 0 -> 100 -> 50 -> finalScore
     final tween = TweenSequence<int>([
-      // First animate to 10 (33% of total animation time)
-      TweenSequenceItem<int>(tween: IntTween(begin: 0, end: 10), weight: 33),
-      // Then animate to 5 (33% of total animation time)
-      TweenSequenceItem<int>(tween: IntTween(begin: 10, end: 5), weight: 33),
-      // Finally animate to the actual score (34% of total animation time)
+      // First animate to 100 (Lower weight for large jump)
+      TweenSequenceItem<int>(tween: IntTween(begin: 0, end: 100), weight: 25),
+      // Then animate down to 50 (Higher weight)
+      TweenSequenceItem<int>(tween: IntTween(begin: 100, end: 50), weight: 35),
+      // Finally animate to the actual score (clamped 0-100) (Highest weight)
       TweenSequenceItem<int>(
-        tween: IntTween(begin: 5, end: finalScore),
-        weight: 34,
+        tween: IntTween(begin: 50, end: finalScore.clamp(0, 100)),
+        weight: 40, // Give potentially smaller final step more time
       ),
     ]);
 
+    // Remove the overall curve for now, run linearly
     _scoreAnimation = tween.animate(_animationController);
     _animationController.forward(from: 0.0);
     _animationStarted = true;
@@ -82,7 +84,35 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
             icon: const Icon(Icons.arrow_back),
             onPressed: () => context.go(AppRouter.home),
           ),
-          title: Text(widget.searchResult.name),
+          title: Text(widget.searchResult.name, style: GoogleFonts.oswald()),
+          actions: [
+            BlocBuilder<BrandLiteracyBloc, BrandLiteracyState>(
+              builder: (context, state) {
+                // Only show the button if data is loaded
+                if (state.status == BrandLiteracyStatus.loaded &&
+                    state.brandLiteracy != null) {
+                  return IconButton(
+                    icon: const Icon(Icons.help_outline),
+                    tooltip: "Show Score Breakdown",
+                    onPressed: () {
+                      // We already know state is loaded and brandLiteracy is not null here
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext dialogContext) {
+                          return ScoreBreakdownModal(
+                            brandLiteracy: state.brandLiteracy!,
+                          );
+                        },
+                      );
+                    },
+                  );
+                } else {
+                  // Return an empty container if data is not loaded
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -265,7 +295,8 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
   }
 
   Widget _buildGauge(BuildContext context, int score) {
-    final filledGraduations = (score * 2).clamp(0, 20);
+    // Map score 1-100 to 0-20 graduations
+    final filledGraduations = (score / 5).round().clamp(0, 20);
 
     return Stack(
       children: [
@@ -283,7 +314,7 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
                 return Expanded(
                   child: Center(
                     child: Container(
-                      width: 180,
+                      width: 220,
                       margin: const EdgeInsets.symmetric(vertical: 2),
                       decoration: BoxDecoration(
                         color: graduationColor,
@@ -300,7 +331,7 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
         Align(
           alignment: Alignment.topRight,
           child: CircleAvatar(
-            radius: 100,
+            radius: 80,
             backgroundColor: Colors.white,
             child: Image.asset("assets/images/duck_garbage_no_bg.png"),
           ),
@@ -308,7 +339,7 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
         Align(
           alignment: Alignment.bottomLeft,
           child: CircleAvatar(
-            radius: 100,
+            radius: 80,
             backgroundColor: Colors.white,
             child: Image.asset("assets/images/duck_transat_no_bg.png"),
           ),
@@ -321,14 +352,19 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
     if (key == null) return "";
     switch (key) {
       case "note12":
+      case "note1_20": // Added for 1-100 range
         return l10n.note12;
       case "note34":
+      case "note21_40": // Added for 1-100 range
         return l10n.note34;
       case "note56":
+      case "note41_60": // Added for 1-100 range
         return l10n.note56;
       case "note78":
+      case "note61_80": // Added for 1-100 range
         return l10n.note78;
       case "note910":
+      case "note81_100": // Added for 1-100 range
         return l10n.note910;
       case "errorLoadingData":
         return l10n.errorLoadingData;
@@ -338,16 +374,17 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
   }
 
   String? _getScoreNoteKey(int score) {
-    if (score >= 1 && score <= 2) {
-      return "note12";
-    } else if (score >= 3 && score <= 4) {
-      return "note34";
-    } else if (score >= 5 && score <= 6) {
-      return "note56";
-    } else if (score >= 7 && score <= 8) {
-      return "note78";
-    } else if (score >= 9 && score <= 10) {
-      return "note910";
+    // Map score 1-100 to note keys
+    if (score >= 1 && score <= 20) {
+      return "note1_20";
+    } else if (score >= 21 && score <= 40) {
+      return "note21_40";
+    } else if (score >= 41 && score <= 60) {
+      return "note41_60";
+    } else if (score >= 61 && score <= 80) {
+      return "note61_80";
+    } else if (score >= 81 && score <= 100) {
+      return "note81_100";
     } else {
       return null;
     }

@@ -11,7 +11,7 @@ from langchain_community.tools import BaseTool
 from langchain_community.tools.ddg_search.tool import DuckDuckGoSearchRun
 from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, validator
 
 from app.models import BrandLiteracy
 from app.prompts import PROMPT_TEMPLATES
@@ -23,7 +23,7 @@ class ParentCompanyResponse(BaseModel):
     brand: str
     parentCompany: Optional[Dict[str, str]] = None
     
-    @field_validator("parentCompany")
+    @validator("parentCompany")
     def validate_parent_company(cls, v):
         if v is not None:
             if "value" not in v or "source" not in v:
@@ -35,7 +35,7 @@ class BrandOriginResponse(BaseModel):
     brand: str
     brandOrigin: Optional[Dict[str, str]] = None
     
-    @field_validator("brandOrigin")
+    @validator("brandOrigin")
     def validate_brand_origin(cls, v):
         if v is not None:
             if "value" not in v or "source" not in v:
@@ -49,7 +49,7 @@ class ValueSourceResponse(BaseModel):
     brand: str
     value: Optional[Dict[str, str]] = None
     
-    @field_validator("value")
+    @validator("value")
     def validate_value_source(cls, v):
         if v is not None:
             if "value" not in v or "source" not in v:

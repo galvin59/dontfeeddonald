@@ -24,28 +24,22 @@ class BrandLiteracy(Base):
     
     # Optional fields
     logoUrl = Column(Text, nullable=True)
-    similarBrandsEu = Column(Text, nullable=True)
     productFamily = Column(String(255), nullable=True)
     
-    # Value/Source tuples
-    totalEmployees = Column(Text, nullable=True)
-    totalEmployeesSource = Column(Text, nullable=True)
-    employeesUS = Column(Text, nullable=True)
-    employeesUSSource = Column(Text, nullable=True)
-    economicImpact = Column(Text, nullable=True)
-    economicImpactSource = Column(Text, nullable=True)
-    
     # Boolean fields with sources
-    factoryInFrance = Column(Boolean, nullable=True)
-    factoryInFranceSource = Column(Text, nullable=True)
-    factoryInEU = Column(Boolean, nullable=True)
-    factoryInEUSource = Column(Text, nullable=True)
-    frenchFarmer = Column(Boolean, nullable=True)
-    frenchFarmerSource = Column(Text, nullable=True)
-    euFarmer = Column(Boolean, nullable=True)
-    euFarmerSource = Column(Text, nullable=True)
+    usEmployees = Column(Boolean, nullable=True)
+    usEmployeesSource = Column(Text, nullable=True)
+    euEmployees = Column(Boolean, nullable=True)
+    euEmployeesSource = Column(Text, nullable=True)
+    usFactory = Column(Boolean, nullable=True)
+    usFactorySource = Column(Text, nullable=True)
+    euFactory = Column(Boolean, nullable=True)
+    euFactorySource = Column(Text, nullable=True)
+    usSupplier = Column(Boolean, nullable=True)
+    usSupplierSource = Column(Text, nullable=True)
+    euSupplier = Column(Boolean, nullable=True)
+    euSupplierSource = Column(Text, nullable=True)
 
-    
     # Metadata fields
     createdAt = Column(DateTime(timezone=True), server_default=func.now())
     updatedAt = Column(DateTime(timezone=True), onupdate=func.now())

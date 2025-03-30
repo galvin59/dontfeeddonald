@@ -22,8 +22,7 @@ export const lookupBrands = async (req: Request, res: Response): Promise<void> =
     const brands = await brandLiteracyRepository.find({
       where: {
         name: ILike(`%${query}%`)
-      },
-      select: ["id", "name", "logoUrl"]
+      }
     });
 
     res.status(200).json(brands);
@@ -45,9 +44,7 @@ export const getBrandById = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    const brand = await brandLiteracyRepository.findOne({
-      where: { id }
-    });
+    const brand = await brandLiteracyRepository.findOne({ where: { id } });
 
     if (!brand) {
       res.status(404).json({ error: "Brand not found" });
@@ -66,22 +63,18 @@ export const getBrandById = async (req: Request, res: Response): Promise<void> =
     let score = 0;
 
     // 1. Brand Origin Contribution (Max 40 points)
-    if (brand.brandOrigin) {
-      if (euCountries.includes(brand.brandOrigin)) {
-        score += 40; // EU Origin
-      } else if (brand.brandOrigin === "United States") {
-        score += 10; // US Origin
-      } else {
-        score += 20; // Other Origin
-      }
+    const origin = brand.brandOrigin ? brand.brandOrigin.toUpperCase() : "UNKNOWN"; // Handle null origin
+    if (euCountries.includes(origin)) {
+      score += 40; // EU Origin
+    } else if (origin === "UNITED STATES") {
+      score += 10; // US Origin
     } else {
-      score += 20; // Unknown Origin treated as 'Other'
+      score += 20; // Other Origin
     }
 
     // 2. Factory Location Contribution (Max 20 points)
-    // Assumes brand.factoryInUS exists
-    const factoryUS = brand.factoryInUS;
-    const factoryEU = brand.factoryInEU;
+    const factoryUS = brand.usFactory;
+    const factoryEU = brand.euFactory;
 
     if (factoryUS === false && factoryEU === true) {
       score += 20;
@@ -104,9 +97,8 @@ export const getBrandById = async (req: Request, res: Response): Promise<void> =
     }
 
     // 3. Employee Location Contribution (Max 20 points)
-    // Assumes brand.employeesEU exists alongside brand.employeesUS
-    const employeesUS = brand.employeesUS; 
-    const employeesEU = (brand as any).employeesEU; // Cast as any if field not strongly typed yet
+    const employeesUS = brand.usEmployees;
+    const employeesEU = brand.euEmployees;
 
     if (employeesUS === false && employeesEU === true) {
       score += 20;
@@ -126,10 +118,9 @@ export const getBrandById = async (req: Request, res: Response): Promise<void> =
       score += 5; // Default for other combinations
     }
 
-    // 4. Farmer Origin Contribution (Max 20 points)
-    // Assumes brand.farmerUS exists alongside brand.euFarmer
-    const farmerUS = (brand as any).farmerUS; // Cast as any if field not strongly typed yet
-    const farmerEU = brand.euFarmer;
+    // 4. Supplier (Farmer) Origin Contribution (Max 20 points)
+    const farmerUS = brand.usSupplier;
+    const farmerEU = brand.euSupplier;
 
     if (farmerUS === false && farmerEU === true) {
       score += 20;

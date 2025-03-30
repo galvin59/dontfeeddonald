@@ -29,5 +29,28 @@
   "ourOpinion": "Notre avis :",
   "searchError": "Une erreur est survenue",
   "brandNameHint": "Nom de marque...",
-  "errorLoadingData": "Erreur lors du chargement des détails de la marque"
+  "errorLoadingData": "Erreur lors du chargement des détails de la marque",
+  "scoreBreakdownTitle": "Détail du Score",
+  "brandOriginLabel": "Basse-cour d'origine",
+  "usEmployeesLabel": "La marque crée de l'emploi dans la basse-cour de Donald ?",
+  "euEmployeesLabel": "La marque crée de l'emploi dans la \"vieille\" basse-cour ?",
+  "usFactoryLabel": "La marque a-t-elle des usines dans la basse-cour de Donald ?",
+  "euFactoryLabel": "La marque a-t-elle des usines dans la \"vieille\" basse-cour ?",
+  "usSupplierLabel": "La marque s'a-t-elle des fournisseurs dans la basse-cour de Donald ?",
+  "euSupplierLabel": "La marque s'a-t-elle des fournisseurs dans la \"vieille\" basse-cour ?",
+  "closeButtonLabel": "Fermer",
+  "unknownCountryCode": "{countryCode} (Inconnue)",
+  "@unknownCountryCode": {
+    "description": "Label for when the country code is known but the flag/name isn't.",
+    "placeholders": {
+      "countryCode": {
+        "type": "String",
+        "example": "XX"
+      }
+    }
+  },
+  "aiDisclaimer": "Ces informations ont été récupérées par une ICA (Intelligence de Canard Artificielle), elles sont donc à prendre avec la réserve nécessaire !",
+  "@aiDisclaimer": {
+    "description": "Avertissement sur la source de l'information étant une IA."
+  }
 }

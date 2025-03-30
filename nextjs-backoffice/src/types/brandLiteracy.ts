@@ -1,8 +1,8 @@
 export interface BrandLiteracy {
   id: string;
   name: string;
-  parentCompany: string;
-  brandOrigin: string;
+  parentCompany: string | null;
+  brandOrigin: string | null;
   logoUrl: string | null;
   similarBrandsEu: string | null;
   productFamily: string | null;
@@ -10,18 +10,25 @@ export interface BrandLiteracy {
   totalEmployeesSource: string | null;
   employeesUS: string | null;
   employeesUSSource: string | null;
+  usEmployees: boolean | null;
+  euEmployees: boolean | null;
   economicImpact: string | null;
   economicImpactSource: string | null;
   factoryInFrance: boolean | null;
   factoryInFranceSource: string | null;
   factoryInEU: boolean | null;
   factoryInEUSource: string | null;
+  usFactory: boolean | null;
+  euFactory: boolean | null;
   frenchFarmer: boolean | null;
   frenchFarmerSource: string | null;
   euFarmer: boolean | null;
   euFarmerSource: string | null;
+  usSupplier: boolean | null;
+  euSupplier: boolean | null;
   createdAt: string | null;
   updatedAt: string | null;
-  isEnabled: boolean;
+  isEnabled: boolean | null;
   isError: boolean;
+  score: number | null;
 }

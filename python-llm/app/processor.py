@@ -28,6 +28,30 @@ logger = logging.getLogger(__name__)
 class BrandProcessor:
     """Handles the sequential processing of brand information."""
     
+    # Define the order of fields to process
+    # Note: logoUrl is handled separately in process_brand_field
+    FIELD_ORDER = [
+        "parentCompany",
+        "brandOrigin", 
+        # "logoUrl", # Handled separately
+        "productFamily", # Added as it exists in model and prompts
+        "usEmployees",
+        "euEmployees",
+        "usFactory",
+        "euFactory",
+        "usSupplier",
+        "euSupplier"
+    ]
+    
+    BOOLEAN_FIELDS = {
+        "usEmployees",
+        "euEmployees",
+        "usFactory",
+        "euFactory",
+        "usSupplier",
+        "euSupplier"
+    }
+    
     def __init__(self, model_name: str = "mistral", temperature: float = 0.1):
         """
         Initialize the brand processor.
@@ -37,23 +61,9 @@ class BrandProcessor:
             temperature: Temperature for LLM generation
         """
         self.agent = BrandLookupAgent(model_name=model_name, temperature=temperature)
+        self.field_order = self.FIELD_ORDER # Use class variable
         logger.info(f"Initialized BrandProcessor with {model_name} model")
         
-        # Define the order of fields to process
-        self.field_order = [
-            "parentCompany",
-            "brandOrigin", 
-            "logoUrl",
-            "similarBrandsEu",
-            "totalEmployees",
-            "employeesUS",
-            "economicImpact",
-            "factoryInFrance",
-            "factoryInEU",
-            "frenchFarmer",
-            "euFarmer"
-        ]
-    
     async def process_brand_field(self, brand: BrandLiteracy, field: str, session) -> bool:
         """
         Process a specific field for a brand.
@@ -138,7 +148,7 @@ class BrandProcessor:
                 if "value" in field_data:
                     value = field_data["value"]
                     # Convert to boolean for boolean fields
-                    if field in ["factoryInFrance", "factoryInEU", "frenchFarmer", "euFarmer"]:
+                    if field in self.BOOLEAN_FIELDS:
                         if isinstance(value, bool):
                             boolean_value = value
                         else:

@@ -13,5 +13,8 @@ DB_CONFIG = {
     "username": os.getenv("DB_USERNAME", ""),
     "password": os.getenv("DB_PASSWORD", ""),
     "database": os.getenv("DB_DATABASE", ""),
-    "synchronize": os.getenv("DB_SYNCHRONIZE", "true").lower() == "true"
+    "synchronize": os.getenv("DB_SYNCHRONIZE", "true").lower() == "true",
+    "ssl": os.getenv("DB_SSL", "false").lower() == "true" # Read DB_SSL
 }
+
+# LLM configuration

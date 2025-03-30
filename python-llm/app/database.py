@@ -13,7 +13,11 @@ else:
     connection_string = f"postgresql://{DB_CONFIG['username']}@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}"
 
 # Create SQLAlchemy engine
-engine = create_engine(connection_string)
+connect_args = {}
+if DB_CONFIG["ssl"]:
+    connect_args["sslmode"] = "require"
+
+engine = create_engine(connection_string, connect_args=connect_args)
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

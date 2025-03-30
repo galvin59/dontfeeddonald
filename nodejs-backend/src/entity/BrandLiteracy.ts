@@ -8,71 +8,53 @@ export class BrandLiteracy {
   @Column({ nullable: false })
   name!: string;
 
-  @Column({ nullable: false })
-  parentCompany!: string;
+  @Column({ type: "text", nullable: true })
+  parentCompany!: string | null;
 
-  @Column({ nullable: false })
-  brandOrigin!: string;
+  @Column({ type: "text", nullable: true })
+  brandOrigin!: string | null;
 
-  @Column({ nullable: true })
-  logoUrl!: string;
+  @Column({ type: "text", nullable: true })
+  logoUrl!: string | null;
 
-  @Column({ nullable: true })
-  similarBrandsEu!: string;
-
-  @Column({ nullable: true })
-  productFamily!: string;
-
-  @Column({ nullable: true })
-  totalEmployees!: string;
-
-  @Column({ nullable: true })
-  totalEmployeesSource!: string;
+  @Column({ type: "text", nullable: true })
+  productFamily!: string | null;
 
   @Column({ type: "boolean", nullable: true })
-  employeesUS!: boolean | null;
+  usEmployees!: boolean | null;
 
-  @Column({ nullable: true })
-  employeesUSSource!: string;
-
-  @Column({ type: "boolean", nullable: true })
-  employeesEU!: boolean | null;
-
-  @Column({ nullable: true })
-  economicImpact!: string;
-
-  @Column({ nullable: true })
-  economicImpactSource!: string;
-
-  @Column({ nullable: true })
-  factoryInFrance!: boolean;
-
-  @Column({ nullable: true })
-  factoryInFranceSource!: string;
-
-  @Column({ nullable: true })
-  factoryInEU!: boolean;
-
-  @Column({ nullable: true })
-  factoryInEUSource!: string;
+  @Column({ type: "text", nullable: true })
+  usEmployeesSource!: string | null;
 
   @Column({ type: "boolean", nullable: true })
-  factoryInUS!: boolean | null;
+  euEmployees!: boolean | null;
 
-  @Column({ nullable: true })
-  frenchFarmer!: boolean;
-
-  @Column({ nullable: true })
-  frenchFarmerSource!: string;
-
-  @Column({ nullable: true })
-  euFarmer!: boolean;
-
-  @Column({ nullable: true })
-  euFarmerSource!: string;
+  @Column({ type: "text", nullable: true })
+  euEmployeesSource!: string | null;
 
   @Column({ type: "boolean", nullable: true })
-  farmerUS!: boolean | null;
+  usFactory!: boolean | null;
+
+  @Column({ type: "text", nullable: true })
+  usFactorySource!: string | null;
+
+  @Column({ type: "boolean", nullable: true })
+  euFactory!: boolean | null;
+
+  @Column({ type: "text", nullable: true })
+  euFactorySource!: string | null;
+
+  @Column({ type: "boolean", nullable: true })
+  usSupplier!: boolean | null;
+
+  @Column({ type: "text", nullable: true })
+  usSupplierSource!: string | null;
+
+  @Column({ type: "boolean", nullable: true })
+  euSupplier!: boolean | null;
+
+  @Column({ type: "text", nullable: true })
+  euSupplierSource!: string | null;
 
   @Column({ name: "createdAt", type: "timestamp", nullable: true })
   createdAt!: Date;
