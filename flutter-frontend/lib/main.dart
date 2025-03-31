@@ -6,6 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart'; 
+// import 'dart:io' show Platform; 
 import 'package:dont_feed_donald/core/providers/locale_provider.dart';
 import 'package:dont_feed_donald/core/routes/app_router.dart';
 import 'package:dont_feed_donald/core/theme/app_theme.dart';
@@ -34,13 +36,33 @@ Future<void> setupDependencies() async {
   final secureStorage = getIt<SecureStorageService>();
   
   // TEMPORARY: Force refresh of API key from .env file
-  await secureStorage.deleteApiKey();
+  // Consider removing this if not strictly needed on every start
+  // await secureStorage.deleteApiKey();
   await secureStorage.ensureApiKeyIsSet();
+}
+
+Future<void> loadEnvironmentVariables() async {
+  // Only load the .env file if NOT in release mode (i.e., debug/profile)
+  // The .env file might be a placeholder in CI builds, but we prioritize Platform.environment there.
+  if (!kReleaseMode) {
+    try {
+      await dotenv.load(fileName: ".env");
+      print("Loaded .env file for local development.");
+    } catch (e) {
+      print("Could not load .env file (might be normal in release): $e");
+      // Decide if this is fatal for local dev, maybe throw error?
+    }
+  } else {
+    print("Running in release mode, relying on system environment variables.");
+    // dotenv package often reads Platform.environment automatically as fallback,
+    // but we explicitly check Platform.environment in SecureStorageService for clarity.
+  }
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+  print("[main] Starting application initialization...");
+
   // Make the app full screen by setting the status bar and navigation bar to be transparent
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -59,12 +81,22 @@ void main() async {
   
   // Ensure keyboard is dismissed when app starts
   SystemChannels.textInput.invokeMethod('TextInput.hide');
-  
-  // Load environment variables from .env file
-  await dotenv.load(fileName: ".env");
-  
-  await setupDependencies();
-  runApp(const DontFeedDonaldApp());
+
+  // Load environment variables conditionally
+  await loadEnvironmentVariables();
+  print("[main] Environment variable loading finished.");
+
+  try { 
+    await setupDependencies();
+    print("[main] Dependencies setup finished.");
+    runApp(const DontFeedDonaldApp());
+    print("[main] runApp called successfully.");
+  } catch (error, stackTrace) {
+     print("[main] FATAL ERROR during setup or runApp: $error");
+     print(stackTrace);
+     // Consider showing a user-friendly error screen here instead of just crashing
+     // runApp(ErrorScreen(error: error, stackTrace: stackTrace));
+  }
 }
 
 class DontFeedDonaldApp extends StatelessWidget {
