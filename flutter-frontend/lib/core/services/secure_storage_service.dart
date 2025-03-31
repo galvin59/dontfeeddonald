@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart'; // For kReleaseMode and String.fromEnvironment
 
 /// Service to securely store sensitive data like API keys
 class SecureStorageService {
@@ -44,21 +45,50 @@ class SecureStorageService {
   }
   
   /// Loads the API key from the initialized dotenv environment if it's not already in secure storage
+  /// If not found, attempts to load it:
+  ///  - In Release mode: Reads from the compile-time environment variable 'API_KEY' (set via --dart-define).
+  ///  - In Non-Release mode: Reads from the loaded dotenv environment ('API_KEY').
+  /// Stores the key securely if found and not already present.
+  /// Throws an exception if the key cannot be found in the expected location for the current mode.
   Future<void> ensureApiKeyIsSet() async {
     if (!await hasApiKey()) {
-      print("[SecureStorage] API Key not found in secure storage, trying to fetch from dotenv environment...");
-      // dotenv.load() should have been called in main(), merging .env and Platform.environment.
-      // Now we just need to read from the initialized dotenv.
-      String? envApiKey = dotenv.maybeGet(_apiKeyEnvName);
+      print("[SecureStorage] API Key not found in secure storage, trying to fetch...");
+      String? envApiKey;
+
+      if (kReleaseMode) {
+        // In release builds, prioritize the compile-time variable set via --dart-define
+        print("[SecureStorage] Running in RELEASE mode, checking compile-time define '$_apiKeyEnvName'...");
+        const apiKeyFromDefine = String.fromEnvironment(_apiKeyEnvName);
+        if (apiKeyFromDefine.isNotEmpty) {
+          envApiKey = apiKeyFromDefine;
+          print("[SecureStorage] API Key found via compile-time define.");
+        } else {
+          print("[SecureStorage] WARNING: Compile-time define '$_apiKeyEnvName' is empty or not set in RELEASE mode!");
+          // Optional: Fallback to dotenv even in release? Or just fail?
+          // For now, we assume --dart-define is the primary source in release.
+        }
+      } else {
+        // In non-release (debug/profile) builds, use dotenv
+        print("[SecureStorage] Running in NON-RELEASE mode, checking dotenv environment '$_apiKeyEnvName'...");
+        // dotenv.load() should have been called in main()
+        envApiKey = dotenv.maybeGet(_apiKeyEnvName);
+        if (envApiKey != null && envApiKey.isNotEmpty) {
+             print("[SecureStorage] API Key found via dotenv.");
+        } else {
+             print("[SecureStorage] WARNING: API Key not found via dotenv in NON-RELEASE mode!");
+        }
+      }
 
       if (envApiKey != null && envApiKey.isNotEmpty) {
-        print("[SecureStorage] API Key found in dotenv environment ('$_apiKeyEnvName'), storing securely...");
+        print("[SecureStorage] API Key found ('$_apiKeyEnvName'), storing securely...");
         await saveApiKey(envApiKey);
       } else {
-        print("[SecureStorage] FATAL: API Key not found in the loaded dotenv environment using key '$_apiKeyEnvName'! Ensure it's in .env (local) or Platform env (CI).");
-        // This is likely the cause of the white screen in release.
-        // Throw an exception to make the failure clear during startup.
-        throw Exception("API Key configuration error: Variable '$_apiKeyEnvName' not found in loaded environment.");
+        // If key is still null/empty after checking the appropriate source
+        String errorMessage = kReleaseMode
+            ? "FATAL: API Key not found via compile-time define '$_apiKeyEnvName'. Ensure --dart-define=API_KEY=... is set correctly in the CI build command for RELEASE."
+            : "FATAL: API Key not found via dotenv key '$_apiKeyEnvName'. Ensure it's in your .env file for NON-RELEASE.";
+        print("[SecureStorage] $errorMessage");
+        throw Exception(errorMessage); 
       }
     } else {
        print("[SecureStorage] API Key already present in secure storage.");

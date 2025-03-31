@@ -64,21 +64,24 @@ void main() async {
   // Ensure keyboard is dismissed when app starts
   SystemChannels.textInput.invokeMethod('TextInput.hide');
 
-  // Load environment variables UNCONDITIONALLY.
-  // flutter_dotenv merges Platform.environment variables automatically.
-  // The pre-build script ensures a placeholder .env exists in CI.
-  try {
-    await dotenv.load(fileName: ".env");
-    print("[main] dotenv loaded successfully (merged with Platform.environment if applicable).");
-  } catch (e) {
-    print("[main] FATAL ERROR: Failed to load .env file: $e");
-    // This shouldn't happen if the pre-build script runs, but good to have.
-    return; // Stop execution if dotenv fails
+  // Load environment variables ONLY for non-release builds.
+  // Release builds use --dart-define for API_KEY and API_BASE_URL.
+  // dotenv is still needed for other potential settings in debug/profile.
+  if (!kReleaseMode) {
+    try {
+      await dotenv.load(fileName: ".env");
+      print("[main] dotenv loaded successfully for non-release build.");
+    } catch (e) {
+      print("[main] WARNING: Failed to load .env file in non-release build: $e");
+      // Depending on requirements, might want to throw or handle this.
+    }
+  } else {
+    print("[main] Running in RELEASE mode. Skipping dotenv loading. Using --dart-define for config.");
   }
 
   try { 
     await setupDependencies();
-    print("[main] Dependencies setup finished.");
+    print("[main] Dependencies set up successfully.");
     runApp(const DontFeedDonaldApp());
     print("[main] runApp called successfully.");
   } catch (error, stackTrace) {

@@ -49,10 +49,16 @@ android {
                 keyAlias = System.getenv()["CM_KEY_ALIAS"]
                 keyPassword = System.getenv()["CM_KEY_PASSWORD"]
             } else {
-                storeFile = file(keystoreProperties.getProperty("storeFile"))
-                storePassword = keystoreProperties.getProperty("storePassword")
-                keyAlias = keystoreProperties.getProperty("keyAlias")
-                keyPassword = keystoreProperties.getProperty("keyPassword")
+                val localStoreFile = keystoreProperties.getProperty("storeFile")
+                if (localStoreFile != null && localStoreFile.isNotEmpty()) {
+                     println("Local release signing configured using key.properties.")
+                     storeFile = file(localStoreFile)
+                     storePassword = keystoreProperties.getProperty("storePassword")
+                     keyAlias = keystoreProperties.getProperty("keyAlias")
+                     keyPassword = keystoreProperties.getProperty("keyPassword")
+                } else {
+                    println("Warning: 'storeFile' not found in key.properties. Local release builds will not be signed with the release key.")
+                }
             }
         }
     }
@@ -60,7 +66,8 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            signingConfig = signingConfigs.getByName("release")
+            isShrinkResources = true
+            signingConfig = signingConfigs.findByName("release")
         }
     }
 }
