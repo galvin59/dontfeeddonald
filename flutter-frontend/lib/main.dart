@@ -115,7 +115,7 @@ class DontFeedDonaldApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             debugShowCheckedModeBanner: false,
             routerConfig: AppRouter.router,
-            // Remove explicit locale setting to use device locale by default
+            locale: localeProvider.locale, // Use the locale from the provider
             supportedLocales: L10n.all,
             // Make the app truly full screen
             builder: (context, child) {

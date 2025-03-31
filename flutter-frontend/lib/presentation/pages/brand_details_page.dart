@@ -73,6 +73,9 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
 
   @override
   Widget build(BuildContext context) {
+    // Get the localization instance and ensure it's non-null
+    final l10n = AppLocalizations.of(context)!;
+    
     return BlocProvider(
       create:
           (context) =>
@@ -157,8 +160,7 @@ class _BrandDetailsPageState extends State<BrandDetailsPage>
                     // Handle case where loaded state might have null data (fallback)
                     return Center(
                       child: Text(
-                        AppLocalizations.of(context)?.errorLoadingData ??
-                            "Error loading data",
+                        l10n.errorLoadingData,
                       ),
                     );
                   }

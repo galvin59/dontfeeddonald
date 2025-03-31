@@ -102,7 +102,7 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
           children: [
             // Search field
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: TextField(
                 controller: _searchController,
                 focusNode: _searchFocusNode,
@@ -125,21 +125,26 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
                 textInputAction: TextInputAction.search,
               ),
             ),
-            const SizedBox(height: 16),
+
             // Search results area
             Expanded(
-              child: BlocBuilder<BrandSearchBloc, BrandSearchState>(
-                builder: (context, state) {
-                  final l10n = AppLocalizations.of(context)!;
-                  if (state.status == BrandSearchStatus.initial) {
-                    return Center(child: Text(l10n.enterBrandNamePrompt));
-                  }
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: BlocBuilder<BrandSearchBloc, BrandSearchState>(
+                  builder: (context, state) {
+                    final l10n = AppLocalizations.of(context)!;
+                    if (state.status == BrandSearchStatus.initial) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(child: Text(l10n.enterBrandNamePrompt)),
+                    );
+                    }
 
-                  if (state.status == BrandSearchStatus.loading) {
+                    if (state.status == BrandSearchStatus.loading) {
                     return const Center(child: CircularProgressIndicator());
-                  }
+                    }
 
-                  if (state.status == BrandSearchStatus.failure) {
+                    if (state.status == BrandSearchStatus.failure) {
                     return Center(
                       child: Text(
                         state.errorMessage ?? l10n.searchError,
@@ -148,26 +153,27 @@ class SlidingSearchPanelState extends State<SlidingSearchPanel> {
                         ),
                       ),
                     );
-                  }
+                    }
 
-                  if (state.brands.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(child: Text(l10n.noBrandsFound)),
-                    );
-                  }
+                    if (state.brands.isEmpty) {
+                      return Center(child: Text(l10n.noBrandsFound));
+                    }
 
-                  return ListView.builder(
-                    itemCount: state.brands.length,
-                    itemBuilder: (context, index) {
-                      final searchResult = state.brands[index];
-                      return BrandListItem(
-                        searchResult: searchResult,
-                        onTap: () => _navigateToBrandDetails(searchResult),
-                      );
-                    },
+                    return ListView.builder(
+                      itemCount: state.brands.length,
+                      padding: EdgeInsets.zero, // Remove default padding
+                      physics: const AlwaysScrollableScrollPhysics(), // Make it always scrollable
+                      shrinkWrap: true, // Fit to content
+                      itemBuilder: (context, index) {
+                        final searchResult = state.brands[index];
+                        return BrandListItem(
+                          searchResult: searchResult,
+                          onTap: () => _navigateToBrandDetails(searchResult),
+                        );
+                      },
                   );
                 },
+              ),
               ),
             ),
           ],

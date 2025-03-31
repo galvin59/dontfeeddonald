@@ -79,10 +79,10 @@
   "note34": "Buying this product allows Donald to live in great comfort... strong in his wealth and unable to restrain his odious temperament, he tends to terrorize the other inhabitants of the barnyard.",
   "note56": "Buying this product certainly benefits Donald, but also the other inhabitants of the barnyard. This forces him to be a little more humble.",
   "note78": "Buying this product clearly helps put Donald on a diet! It encourages him to adopt a healthier lifestyle and, above all, to behave better towards his fellow creatures.",
-  "note910": "Buying this product is really not doing Donald a favor... poor and on a strict diet, it might force him to show a little more respect towards the rest of the barnyard.",
-  "enterBrandNamePrompt": "Enter a brand name to start",
+  "note910": "Buying this product really doesn’t do Donald any favors… poor guy’s on a strict diet. Maybe it’ll teach him a bit more respect for the rest of the barnyard.",
+  "enterBrandNamePrompt": "Tell us what brand you’re eyeing — we’ll let you know if it’s Donald-approved… or if you’re feeding the beast !",
   "@enterBrandNamePrompt": {
-    "description": "Prompt to enter a brand name"
+    "description": "Message above search button"
   },
   "noBrandsFound": "No brands found. For now, this app only references major brands sold in EU supermarkets!",
   "@noBrandsFound": {
@@ -154,5 +154,17 @@
   "aiDisclaimer": "This information was retrieved by an ADI (Artificial Duck Intelligence), so please take it with the necessary caution!",
   "@aiDisclaimer": {
     "description": "Disclaimer about the source of the information being AI."
+  },
+  "appTagline": "Donald thinks he's the king of the barnyard, but most importantly, he eats too much. Help us put him on a diet!",
+  "@appTagline": {
+    "description": "The tagline shown on the home page describing the app's purpose"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Name of English language in English"
+  },
+  "languageFrench": "French",
+  "@languageFrench": {
+    "description": "Name of French language in English"
   }
 }

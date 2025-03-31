@@ -23,7 +23,7 @@
   "note56": "Acheter ce produit bénéficie certes à Donald, mais aussi aux autres habitants de la basse-cour. Cela l'oblige donc à un peu plus d'humilité.",
   "note78": "Acheter ce produit contribue clairement à mettre Donald au régime ! Cela l'encourage à adopter un mode de vie plus sain et surtout à mieux se comporter vis à vis de ses congénères.",
   "note910": "Acheter ce produit, ce n'est vraiment pas rendre service à Donald ... le pauvre est au régime sec, cela l'obligera peut-être à un peu plus de respect vis à vis du reste de la basse-cour.",
-  "enterBrandNamePrompt": "Entrez le nom d'une marque pour commencer",
+  "enterBrandNamePrompt": "Dites-nous quelle marque vous comptez acheter, et on vous dira si c'est bon pour Donald ou si cela va contribuer à l'engraisser",
   "noBrandsFound": "Aucune marque trouvée. Pour l'instant, cette app ne référence que les principales marques vendues en grande-distribution !",
   "searchBrandTitle": "Rechercher une marque",
   "ourOpinion": "Notre avis :",
@@ -52,5 +52,8 @@
   "aiDisclaimer": "Ces informations ont été récupérées par une ICA (Intelligence de Canard Artificielle), elles sont donc à prendre avec la réserve nécessaire !",
   "@aiDisclaimer": {
     "description": "Avertissement sur la source de l'information étant une IA."
-  }
+  },
+  "appTagline": "Donald se prend pour le roi de la basse-cour, mais surtout, il mange trop. Aidez-nous à le mettre au régime !",
+  "languageEnglish": "Anglais",
+  "languageFrench": "Français"
 }

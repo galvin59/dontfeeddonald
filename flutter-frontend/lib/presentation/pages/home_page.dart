@@ -84,7 +84,8 @@ class _HomePageState extends State<HomePage>
     // Set system UI mode to edge-to-edge (full screen)
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    final l10n = AppLocalizations.of(context);
+    // Get the localization instance and ensure it's non-null
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       extendBody: true, // Allows content to extend behind the bottom nav bar
@@ -127,7 +128,7 @@ class _HomePageState extends State<HomePage>
                               children: [
                                 const SizedBox(height: 16),
                                 Text(
-                                  "Dites-nous quelle marque vous comptez acheter, et on vous dira si c'est bon pour Donald ou si cela va contribuer à l'engraisser",
+                                  l10n.enterBrandNamePrompt,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -141,9 +142,11 @@ class _HomePageState extends State<HomePage>
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
                                     foregroundColor: AppTheme.primaryColor,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 32,
-                                      vertical: 8,
+                                    padding: const EdgeInsets.fromLTRB(
+                                      32,
+                                      4,
+                                      32,
+                                      8,
                                     ),
                                     textStyle: GoogleFonts.permanentMarker(
                                       fontSize: 20,
@@ -151,8 +154,7 @@ class _HomePageState extends State<HomePage>
                                     ),
                                   ),
                                   child: Text(
-                                    l10n?.searchHint ??
-                                        "Search for a brand ...",
+                                    l10n.searchBrandTitle,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -217,7 +219,7 @@ class _HomePageState extends State<HomePage>
                       child: Column(
                         children: [
                           Text(
-                            l10n?.appTitle ?? "Don't Feed Donald",
+                            l10n.appTitle,
                             style: GoogleFonts.permanentMarker(
                               textStyle: const TextStyle(
                                 fontSize: 32,
@@ -232,14 +234,22 @@ class _HomePageState extends State<HomePage>
                               ),
                             ),
                           ),
-                          Text(
-                            "Donald se prend pour le roi de la basse-cour,\nmais surtout, il mange trop.\nAidez-nous à le mettre au régime !",
-                            maxLines: 3,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                          Container(
+                            width:
+                                MediaQuery.of(context).size.width *
+                                0.9, // Set width to 90% of screen width
+                            child: Text(
+                              l10n.appTagline,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                height:
+                                    1.2, // Add line height for better spacing
+                              ),
                             ),
                           ),
                         ],

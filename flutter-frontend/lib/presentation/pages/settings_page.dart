@@ -15,14 +15,14 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Set system UI mode to edge-to-edge (full screen)
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    
+
     final localeProvider = Provider.of<LocaleProvider>(context);
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppTheme.primaryColor,
         elevation: 0,
@@ -33,15 +33,7 @@ class SettingsPage extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/home_background.png"),
-            fit: BoxFit.cover,
-            opacity: 0.7,
-          ),
-        ),
-        child: ListView(
+      body: ListView(
         children: [
           ListTile(
             leading: const Icon(Icons.language),
@@ -53,43 +45,25 @@ class SettingsPage extends StatelessWidget {
                   localeProvider.setLocale(newLocale);
                 }
               },
-              items: L10n.all.map<DropdownMenuItem<Locale>>((Locale locale) {
-                return DropdownMenuItem<Locale>(
-                  value: locale,
-                  child: Text(_getLanguageName(locale.languageCode)),
-                );
-              }).toList(),
+              items:
+                  L10n.all
+                      .where(
+                        (locale) => locale.languageCode != 'es',
+                      ) // Filter out Spanish
+                      .map<DropdownMenuItem<Locale>>((Locale locale) {
+                        // Use localized language names directly
+                        String languageName = locale.languageCode == 'en' ? l10n.languageEnglish : l10n.languageFrench;
+                        return DropdownMenuItem<Locale>(
+                          value: locale,
+                          child: Text(languageName),
+                        );
+                      })
+                      .toList(),
             ),
           ),
           const Divider(),
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: Text(l10n.about),
-            onTap: () {
-              showAboutDialog(
-                context: context,
-                applicationName: l10n.appTitle,
-                applicationVersion: "1.0.0",
-                applicationLegalese: "© 2025 Don't Feed Donald",
-              );
-            },
-          ),
         ],
       ),
-      ),
     );
-  }
-
-  String _getLanguageName(String languageCode) {
-    switch (languageCode) {
-      case 'en':
-        return 'English';
-      case 'fr':
-        return 'Français';
-      case 'es':
-        return 'Español';
-      default:
-        return languageCode;
-    }
   }
 }
