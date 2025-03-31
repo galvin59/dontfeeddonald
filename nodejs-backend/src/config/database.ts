@@ -21,9 +21,7 @@ export const AppDataSource = new DataSource({
   ssl: process.env.DB_SSL === "true", // Read SSL setting from env
   // Adjust paths based on environment
   entities: [
-    isProduction
-      ? path.join(__dirname, "..", "entity", "**", "*.js") // Path relative to dist/config/database.js
-      : path.join(__dirname, "..", "entity", "**", "*.ts") // Path relative to src/config/database.ts
+    path.join(__dirname, "..", "entity", "**", "*.js") // Always use JS path relative to dist when running compiled code
   ],
   subscribers: [
     isProduction

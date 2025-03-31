@@ -13,6 +13,7 @@ const api = axios.create({
 export interface PaginationParams {
   page: number;
   limit: number;
+  productFamily?: string;
 }
 
 // Interface for pagination response
@@ -29,11 +30,16 @@ export const getAllBrandLiteracies = async (
   params: PaginationParams
 ): Promise<PaginatedResponse<BrandLiteracy>> => {
   try {
+    const queryParams: any = {
+      page: params.page,
+      limit: params.limit,
+    };
+    if (params.productFamily && params.productFamily !== "All") {
+      queryParams.productFamily = params.productFamily;
+    }
+
     const response = await api.get("/brands/admin/all", {
-      params: {
-        page: params.page,
-        limit: params.limit,
-      },
+      params: queryParams,
       headers: {
         "x-admin-api-key": process.env.NEXT_PUBLIC_ADMIN_API_KEY,
       },
@@ -41,6 +47,21 @@ export const getAllBrandLiteracies = async (
     return response.data;
   } catch (error) {
     console.error("Error fetching brand literacies:", error);
+    throw error;
+  }
+};
+
+// Get unique product families
+export const getProductFamilies = async (): Promise<string[]> => {
+  try {
+    const response = await api.get("/brands/admin/product-families", {
+      headers: {
+        "x-admin-api-key": process.env.NEXT_PUBLIC_ADMIN_API_KEY,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching product families:", error);
     throw error;
   }
 };

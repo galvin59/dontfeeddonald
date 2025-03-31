@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ILike } from "typeorm";
+import { ILike, FindOptionsWhere } from "typeorm";
 import { AppDataSource } from "../config/database";
 import { BrandLiteracy } from "../entity/BrandLiteracy";
 import { calculateBrandScore } from "../utils/scoring"; // Import the new utility function
@@ -86,12 +86,20 @@ export const getAllBrandLiteracies = async (req: Request, res: Response): Promis
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;
+    const productFamily = req.query.productFamily as string | undefined; // Get productFamily filter
 
-    // Get total count
-    const total = await brandLiteracyRepository.count();
+    // Build the where condition dynamically
+    const whereCondition: FindOptionsWhere<BrandLiteracy> = {};
+    if (productFamily && productFamily !== "All") {
+      whereCondition.productFamily = productFamily;
+    }
 
-    // Get paginated data
+    // Get total count based on the filter
+    const total = await brandLiteracyRepository.count({ where: whereCondition });
+
+    // Get paginated data based on the filter
     const brandLiteracies = await brandLiteracyRepository.find({
+      where: whereCondition, // Apply the filter here
       skip,
       take: limit,
       order: {
@@ -112,6 +120,27 @@ export const getAllBrandLiteracies = async (req: Request, res: Response): Promis
     });
   } catch (error) {
     console.error("Error fetching all brand literacies:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+/**
+ * Get a list of unique product families
+ */
+export const getProductFamilies = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const families = await brandLiteracyRepository
+      .createQueryBuilder("brand")
+      .select("DISTINCT brand.productFamily", "productFamily")
+      .orderBy("brand.productFamily", "ASC") // Order by the qualified column name
+      .getRawMany();
+
+    // Extract the productFamily values and filter out nulls/empty strings
+    const familyNames = families.map(f => f.productFamily).filter(f => f); // Filter out null/empty values
+
+    res.status(200).json(familyNames);
+  } catch (error) {
+    console.error("Error fetching product families:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

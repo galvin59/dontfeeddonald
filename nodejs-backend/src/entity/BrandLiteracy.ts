@@ -17,7 +17,7 @@ export class BrandLiteracy {
   @Column({ type: "text", nullable: true })
   logoUrl!: string | null;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "text", nullable: true, name: "productFamily" })
   productFamily!: string | null;
 
   @Column({ type: "boolean", nullable: true })
