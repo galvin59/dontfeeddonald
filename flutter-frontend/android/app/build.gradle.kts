@@ -1,3 +1,12 @@
+import java.io.File
+import java.util.*
+
+val keystoreProperties =
+    Properties().apply {
+        var file = File("key.properties")
+        if (file.exists()) load(file.reader())
+    }
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -9,6 +18,8 @@ android {
     namespace = "net.saumande.dont_feed_donald"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "26.3.11579264"
+
+    val appVersionCode = (System.getenv()["NEW_BUILD_NUMBER"] ?: "1")?.toInt()
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -26,29 +37,30 @@ android {
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
+        versionCode = appVersionCode
         versionName = flutter.versionName
     }
 
     signingConfigs {
         create("release") {
-            if (System.getenv()["CI"]) {
-                storeFile file(System.getenv()['CM_KEYSTORE_PATH'])
-                storePassword System.getenv()['CM_KEYSTORE_PASSWORD']
-                keyAlias System.getenv()['CM_KEY_ALIAS']
-                keyPassword System.getenv()['CM_KEY_PASSWORD']
+            if (System.getenv()["CI"].toBoolean()) { // CI=true is exported by Codemagic
+                storeFile = file(System.getenv()["CM_KEYSTORE_PATH"])
+                storePassword = System.getenv()["CM_KEYSTORE_PASSWORD"]
+                keyAlias = System.getenv()["CM_KEY_ALIAS"]
+                keyPassword = System.getenv()["CM_KEY_PASSWORD"]
             } else {
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-                storePassword keystoreProperties['storePassword']
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
             }
         }
     }
 
     buildTypes {
-        release {
-            signingConfig signingConfigs.release
+        getByName("release") {
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 }
