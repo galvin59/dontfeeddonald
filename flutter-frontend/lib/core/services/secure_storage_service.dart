@@ -1,6 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'dart:io' show Platform;
 
 /// Service to securely store sensitive data like API keys
 class SecureStorageService {
@@ -44,22 +43,22 @@ class SecureStorageService {
     await _storage.delete(key: _apiKeyKey);
   }
   
-  /// Loads the API key from .env file or Platform.environment if it's not already in secure storage
+  /// Loads the API key from the initialized dotenv environment if it's not already in secure storage
   Future<void> ensureApiKeyIsSet() async {
     if (!await hasApiKey()) {
-      print("[SecureStorage] API Key not found in secure storage, trying to fetch from environment...");
-      // Try getting from dotenv (loaded locally) OR Platform.environment (CI/Release)
-      // dotenv.maybeGet might read Platform.environment itself, but we check explicitly for robustness.
-      String? envApiKey = dotenv.maybeGet(_apiKeyEnvName, fallback: Platform.environment[_apiKeyEnvName]);
+      print("[SecureStorage] API Key not found in secure storage, trying to fetch from dotenv environment...");
+      // dotenv.load() should have been called in main(), merging .env and Platform.environment.
+      // Now we just need to read from the initialized dotenv.
+      String? envApiKey = dotenv.maybeGet(_apiKeyEnvName);
 
       if (envApiKey != null && envApiKey.isNotEmpty) {
-        print("[SecureStorage] API Key found in environment ('$_apiKeyEnvName'), storing securely...");
+        print("[SecureStorage] API Key found in dotenv environment ('$_apiKeyEnvName'), storing securely...");
         await saveApiKey(envApiKey);
       } else {
-        print("[SecureStorage] FATAL: API Key not found in dotenv OR Platform.environment using key '$_apiKeyEnvName'!");
+        print("[SecureStorage] FATAL: API Key not found in the loaded dotenv environment using key '$_apiKeyEnvName'! Ensure it's in .env (local) or Platform env (CI).");
         // This is likely the cause of the white screen in release.
         // Throw an exception to make the failure clear during startup.
-        throw Exception("API Key configuration error: Environment variable '$_apiKeyEnvName' is not set.");
+        throw Exception("API Key configuration error: Variable '$_apiKeyEnvName' not found in loaded environment.");
       }
     } else {
        print("[SecureStorage] API Key already present in secure storage.");

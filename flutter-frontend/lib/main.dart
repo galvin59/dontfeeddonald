@@ -41,24 +41,6 @@ Future<void> setupDependencies() async {
   await secureStorage.ensureApiKeyIsSet();
 }
 
-Future<void> loadEnvironmentVariables() async {
-  // Only load the .env file if NOT in release mode (i.e., debug/profile)
-  // The .env file might be a placeholder in CI builds, but we prioritize Platform.environment there.
-  if (!kReleaseMode) {
-    try {
-      await dotenv.load(fileName: ".env");
-      print("Loaded .env file for local development.");
-    } catch (e) {
-      print("Could not load .env file (might be normal in release): $e");
-      // Decide if this is fatal for local dev, maybe throw error?
-    }
-  } else {
-    print("Running in release mode, relying on system environment variables.");
-    // dotenv package often reads Platform.environment automatically as fallback,
-    // but we explicitly check Platform.environment in SecureStorageService for clarity.
-  }
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   print("[main] Starting application initialization...");
@@ -82,9 +64,17 @@ void main() async {
   // Ensure keyboard is dismissed when app starts
   SystemChannels.textInput.invokeMethod('TextInput.hide');
 
-  // Load environment variables conditionally
-  await loadEnvironmentVariables();
-  print("[main] Environment variable loading finished.");
+  // Load environment variables UNCONDITIONALLY.
+  // flutter_dotenv merges Platform.environment variables automatically.
+  // The pre-build script ensures a placeholder .env exists in CI.
+  try {
+    await dotenv.load(fileName: ".env");
+    print("[main] dotenv loaded successfully (merged with Platform.environment if applicable).");
+  } catch (e) {
+    print("[main] FATAL ERROR: Failed to load .env file: $e");
+    // This shouldn't happen if the pre-build script runs, but good to have.
+    return; // Stop execution if dotenv fails
+  }
 
   try { 
     await setupDependencies();
