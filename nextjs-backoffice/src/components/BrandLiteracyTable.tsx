@@ -46,6 +46,18 @@ export default function BrandLiteracyTable({ brandLiteracies, onBrandUpdate }: B
     }
   };
 
+  /**
+   * Checks if the URL ends with .svg or .webp.
+   * 
+   * @param url The URL string to check.
+   * @returns True if the URL ends with .svg or .webp (case-insensitive), false otherwise.
+   */
+  const isProblematicFormat = (url: string): boolean => {
+    if (!url) return false;
+    const lowerCaseUrl = url.toLowerCase();
+    return lowerCaseUrl.endsWith(".svg") || lowerCaseUrl.endsWith(".webp");
+  };
+
   // Handle validate button click
   const handleValidate = async (id: string) => {
     setLoadingStates({ ...loadingStates, [id]: true });
@@ -101,54 +113,63 @@ export default function BrandLiteracyTable({ brandLiteracies, onBrandUpdate }: B
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {brandLiteracies.map((brand) => (
-            <tr key={brand.id} className="hover:bg-gray-50">
-              <td className="py-4 px-4 text-sm text-gray-900">
-                {brand.name}
-              </td>
-              <td className="py-4 px-4 text-sm text-gray-900">
-                <input
-                  type="text"
-                  value={logoUrls[brand.id] || ""}
-                  onChange={(e) => handleLogoUrlChange(brand.id, e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter logo URL"
-                  disabled={loadingStates[brand.id]} // Disable input while loading
-                />
-              </td>
-              <td className="py-4 px-4 text-sm text-gray-900">
-                {isValidUrl(logoUrls[brand.id]) ? (
-                  <div className="relative h-16 w-16">
-                    <Image
-                      src={logoUrls[brand.id]}
-                      alt={`${brand.name} logo`}
-                      fill
-                      style={{ objectFit: "contain" }}
-                      onError={(e) => {
-                        // Handle image load error
-                        const target = e.target as HTMLImageElement;
-                        target.src = "/placeholder-image.png"; // Fallback image
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <div className="text-gray-400 italic">No valid image URL</div>
-                )}
-              </td>
-              <td className="py-4 px-4 text-sm text-gray-900">
-                <button
-                  onClick={() => handleValidate(brand.id)}
-                  className={`py-2 px-4 rounded-md transition duration-150 ease-in-out text-white ${loadingStates[brand.id] ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
-                  disabled={loadingStates[brand.id] || !isValidUrl(logoUrls[brand.id])}
-                >
-                  {loadingStates[brand.id] ? "Validating..." : "Validate"}
-                </button>
-                {errorMessages[brand.id] && (
-                  <p className="text-red-500 text-xs mt-1">{errorMessages[brand.id]}</p>
-                )}
-              </td>
-            </tr>
-          ))}
+          {brandLiteracies.map((brand) => {
+            const currentLogoUrl = logoUrls[brand.id] || "";
+            // Highlight if the format is SVG or WebP
+            const shouldHighlight = isValidUrl(currentLogoUrl) && isProblematicFormat(currentLogoUrl);
+
+            return (
+              <tr key={brand.id} className="hover:bg-gray-50">
+                <td className="py-4 px-4 text-sm text-gray-900">
+                  {brand.name}
+                </td>
+                <td className="py-4 px-4 text-sm text-gray-900">
+                  <input
+                    type="text"
+                    value={currentLogoUrl}
+                    onChange={(e) => handleLogoUrlChange(brand.id, e.target.value)}
+                    className={`
+                      w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500
+                      ${shouldHighlight ? 'border-red-500 border-2' : 'border-gray-300'}
+                    `}
+                    placeholder="Enter logo URL"
+                    disabled={loadingStates[brand.id]} // Disable input while loading
+                  />
+                </td>
+                <td className="py-4 px-4 text-sm text-gray-900">
+                  {isValidUrl(currentLogoUrl) ? (
+                    <div className="relative h-16 w-16">
+                      <Image
+                        src={currentLogoUrl}
+                        alt={`${brand.name} logo`}
+                        fill
+                        style={{ objectFit: "contain" }}
+                        onError={(e) => {
+                          // Handle image load error
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/placeholder-image.png"; // Fallback image
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="text-gray-400 italic">No valid image URL</div>
+                  )}
+                </td>
+                <td className="py-4 px-4 text-sm text-gray-900">
+                  <button
+                    onClick={() => handleValidate(brand.id)}
+                    className={`py-2 px-4 rounded-md transition duration-150 ease-in-out text-white ${loadingStates[brand.id] ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+                    disabled={loadingStates[brand.id] || !isValidUrl(logoUrls[brand.id])}
+                  >
+                    {loadingStates[brand.id] ? "Validating..." : "Validate"}
+                  </button>
+                  {errorMessages[brand.id] && (
+                    <p className="text-red-500 text-xs mt-1">{errorMessages[brand.id]}</p>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

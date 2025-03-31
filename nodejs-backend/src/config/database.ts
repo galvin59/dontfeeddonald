@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
   synchronize: true, // Enable synchronization to align schema with model
   logging: true, // Enable SQL query logging
   ssl: process.env.DB_SSL === "true", // Read SSL setting from env
-  entities: ["dist/entity/**/*.js"],
+  entities: ["src/entity/**/*.{ts,js}"], // Look for both TS and JS entity files
   subscribers: [],
   migrations: [],
 });

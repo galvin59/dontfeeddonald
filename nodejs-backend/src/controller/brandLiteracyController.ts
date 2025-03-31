@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ILike } from "typeorm";
 import { AppDataSource } from "../config/database";
 import { BrandLiteracy } from "../entity/BrandLiteracy";
+import { calculateBrandScore } from "../utils/scoring"; // Import the new utility function
 
 // Repository for BrandLiteracy
 const brandLiteracyRepository = AppDataSource.getRepository(BrandLiteracy);
@@ -51,102 +52,24 @@ export const getBrandById = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    // Define EU countries for origin check
-    const euCountries = [
-      "Austria", "Belgium", "Bulgaria", "Croatia", "Republic of Cyprus", "Czech Republic",
-      "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary",
-      "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands",
-      "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"
-    ];
+    // Calculate score using the utility function
+    const scoreDetails = calculateBrandScore(brand);
 
-    // --- Calculate Brand Score (Algorithm) ---
-    let score = 0;
-
-    // 1. Brand Origin Contribution (Max 40 points)
-    const origin = brand.brandOrigin ? brand.brandOrigin.toUpperCase() : "UNKNOWN"; // Handle null origin
-    if (euCountries.includes(origin)) {
-      score += 40; // EU Origin
-    } else if (origin === "UNITED STATES") {
-      score += 10; // US Origin
-    } else {
-      score += 20; // Other Origin
-    }
-
-    // 2. Factory Location Contribution (Max 20 points)
-    const factoryUS = brand.usFactory;
-    const factoryEU = brand.euFactory;
-
-    if (factoryUS === false && factoryEU === true) {
-      score += 20;
-    } else if (factoryUS === true && factoryEU === true) {
-      score += 10;
-    } else if (factoryUS === false && factoryEU === false) {
-      score += 5;
-    } else if (factoryUS === true && factoryEU === false) {
-      score += 0;
-    } else if (factoryUS === null && factoryEU === null) {
-      score += 5; // Both Unknown
-    } else if (factoryUS === null && factoryEU === true) {
-      score += 15; // US Unknown, EU True
-    } else if (factoryUS === true && factoryEU === null) {
-      score += 5;  // US True, EU Unknown
-    } else {
-      // Handle any combinations not explicitly listed (e.g., false/null, null/false)
-      // Defaulting to a lower score contribution for uncertainty/missing data
-      score += 5;
-    }
-
-    // 3. Employee Location Contribution (Max 20 points)
-    const employeesUS = brand.usEmployees;
-    const employeesEU = brand.euEmployees;
-
-    if (employeesUS === false && employeesEU === true) {
-      score += 20;
-    } else if (employeesUS === true && employeesEU === true) {
-      score += 10;
-    } else if (employeesUS === false && employeesEU === false) {
-      score += 5;
-    } else if (employeesUS === true && employeesEU === false) {
-      score += 0;
-    } else if (employeesUS === null && employeesEU === null) {
-      score += 5; // Both Unknown
-    } else if (employeesUS === null && employeesEU === true) {
-      score += 15; // US Unknown, EU True
-    } else if (employeesUS === true && employeesEU === null) {
-      score += 5;  // US True, EU Unknown
-    } else {
-      score += 5; // Default for other combinations
-    }
-
-    // 4. Supplier (Farmer) Origin Contribution (Max 20 points)
-    const farmerUS = brand.usSupplier;
-    const farmerEU = brand.euSupplier;
-
-    if (farmerUS === false && farmerEU === true) {
-      score += 20;
-    } else if (farmerUS === true && farmerEU === true) {
-      score += 10;
-    } else if (farmerUS === false && farmerEU === false) {
-      score += 10; // Note: false/false is 10 points here, different from factory/employee
-    } else if (farmerUS === true && farmerEU === false) {
-      score += 0;
-    } else if (farmerUS === null && farmerEU === null) {
-      score += 10; // Both Unknown
-    } else if (farmerUS === null && farmerEU === true) {
-      score += 15; // US Unknown, EU True (Inferred logic)
-    } else if (farmerUS === true && farmerEU === null) {
-      score += 5;  // US True, EU Unknown (Inferred logic)
-    } else {
-      score += 10; // Default for other combinations
-    }
-
-    // Ensure score is within 0-100 range (though algorithm max seems 100)
-    const finalScore = Math.max(0, Math.min(100, score));
-
-    // Return the brand data with the added score
     res.status(200).json({
       ...brand,
-      score: finalScore
+      score: scoreDetails.totalScore, // Use the calculated total score
+      scoreDetails: {
+        origin: scoreDetails.originScore,
+        factory: scoreDetails.factoryScore,
+        employees: scoreDetails.employeeScore,
+        supplier: scoreDetails.supplierScore,
+        explanations: {
+          origin: scoreDetails.originExplanation,
+          factory: scoreDetails.factoryExplanation,
+          employees: scoreDetails.employeeExplanation,
+          supplier: scoreDetails.supplierExplanation
+        }
+      }
     });
   } catch (error) {
     console.error("Error getting brand by ID:", error);
