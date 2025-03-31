@@ -19,8 +19,6 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "26.3.11579264"
 
-    val appVersionCode = (System.getenv()["NEW_BUILD_NUMBER"] ?: "1")?.toInt()
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -37,7 +35,8 @@ android {
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = appVersionCode
+        // Let Flutter handle versionCode based on --build-number flag
+        versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
