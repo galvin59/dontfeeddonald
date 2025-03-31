@@ -31,12 +31,12 @@ android {
     }
 
     signingConfigs {
-        release {
-            if (System.getenv()["CI"]) { // CI=true is exported by Codemagic
-                storeFile file(System.getenv()["CM_KEYSTORE_PATH"])
-                storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]
-                keyAlias System.getenv()["CM_KEY_ALIAS"]
-                keyPassword System.getenv()["CM_KEY_PASSWORD"]
+        create("release") {
+            if (System.getenv()["CI"]) {
+                storeFile file(System.getenv()['CM_KEYSTORE_PATH'])
+                storePassword System.getenv()['CM_KEYSTORE_PASSWORD']
+                keyAlias System.getenv()['CM_KEY_ALIAS']
+                keyPassword System.getenv()['CM_KEY_PASSWORD']
             } else {
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
